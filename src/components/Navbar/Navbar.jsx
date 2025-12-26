@@ -446,7 +446,7 @@ const Navbar = () => {
                 <Avatar className="w-8 h-8 ring-2 ring-blue-500/20 hover:ring-blue-500/40 transition-all duration-200">
                   <AvatarImage src={user?.image} alt={"logo"} />
                   <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                    {user?.name[0].toUpperCase()}
+                    {user?.name ? user?.name[0].toUpperCase() : ""}
                   </AvatarFallback>
                 </Avatar>
               </Link>
