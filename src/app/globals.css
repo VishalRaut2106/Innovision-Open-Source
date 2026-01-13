@@ -199,3 +199,43 @@ body {
 }
 
 /* Accessibility Features */
+
+
+/* Streak Fire Animations */
+@keyframes float-up {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-float-up {
+  animation: float-up 1s ease-out infinite;
+}
+
+@keyframes fire-flicker {
+  0%, 100% {
+    transform: scale(1) rotate(-2deg);
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.05) rotate(1deg);
+    filter: brightness(1.1);
+  }
+  50% {
+    transform: scale(0.98) rotate(-1deg);
+    filter: brightness(0.95);
+  }
+  75% {
+    transform: scale(1.02) rotate(2deg);
+    filter: brightness(1.05);
+  }
+}
+
+.animate-fire-flicker {
+  animation: fire-flicker 0.5s ease-in-out infinite;
+}

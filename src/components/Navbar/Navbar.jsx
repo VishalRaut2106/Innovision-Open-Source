@@ -472,8 +472,14 @@ const Navbar = () => {
                 </span>
               </div>
               <div className="flex gap-2 items-center rounded-2xl border-2 px-4 py-2 border-orange-500/50 bg-orange-50/50 dark:bg-orange-950/20">
-                <Flame className="h-4 w-4 text-orange-500" />
-                <span className="text-orange-600 dark:text-orange-400 font-bold">{streak}</span>
+                <Flame className={`h-4 w-4 ${streak >= 7 ? 'text-red-500 animate-pulse' : 'text-orange-500'}`} 
+                  style={{ 
+                    filter: streak >= 7 ? 'drop-shadow(0 0 4px rgba(239,68,68,0.6))' : 'none'
+                  }}
+                />
+                <span className={`font-bold ${streak >= 30 ? 'text-red-500' : streak >= 7 ? 'text-orange-500' : 'text-orange-600 dark:text-orange-400'}`}>
+                  {streak}
+                </span>
               </div>
             </>
           )}
