@@ -157,88 +157,40 @@ const Navbar = () => {
 
   return (
     <header className="h-16 w-full border-b fixed top-0 left-0 bg-background/80 backdrop-blur-xl z-50 border-border/50">
-      <div className="h-full max-w-7xl mx-auto px-4 flex items-center justify-between">
-        {/* Logo */}
+      <div className="h-full w-full px-4 flex items-center">
+        {/* Logo - Left */}
         <Link
           href={user ? `/roadmap` : "/"}
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0"
         >
           <Image src="/InnoVision_LOGO-removebg-preview.png" alt="logo" width={40} height={40} />
           <span className="text-xl font-bold hidden sm:block">InnoVision</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
+        {/* Desktop Navigation - Centered */}
+        <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
           {user ? (
             <>
-              {/* Create Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className={`gap-1 ${isActiveGroup(['/generate', '/studio', '/content-ingestion', '/youtube-course']) ? 'bg-muted' : ''}`}>
-                    Create
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56">
-                  {createMenuItems.map((item) => (
-                    <DropdownMenuItem key={item.href} asChild>
-                      <Link href={item.href} className="flex items-start gap-3 p-2">
-                        <item.icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
-                        <div>
-                          <div className="font-medium">{item.label}</div>
-                          <div className="text-xs text-muted-foreground">{item.description}</div>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {/* Learn Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className={`gap-1 ${isActiveGroup(['/roadmap', '/courses', '/code-editor']) ? 'bg-muted' : ''}`}>
-                    Learn
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56">
-                  {learnMenuItems.map((item) => (
-                    <DropdownMenuItem key={item.href} asChild>
-                      <Link href={item.href} className="flex items-start gap-3 p-2">
-                        <item.icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
-                        <div>
-                          <div className="font-medium">{item.label}</div>
-                          <div className="text-xs text-muted-foreground">{item.description}</div>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {/* More Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className={`gap-1 ${isActiveGroup(['/features', '/gamification', '/demo', '/contact']) ? 'bg-muted' : ''}`}>
-                    More
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56">
-                  {moreMenuItems.map((item) => (
-                    <DropdownMenuItem key={item.href} asChild>
-                      <Link href={item.href} className="flex items-start gap-3 p-2">
-                        <item.icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
-                        <div>
-                          <div className="font-medium">{item.label}</div>
-                          <div className="text-xs text-muted-foreground">{item.description}</div>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* All nav items as icons with tooltips */}
+              {[...createMenuItems, ...learnMenuItems, ...moreMenuItems].map((item) => (
+                <Tooltip key={item.href}>
+                  <TooltipTrigger asChild>
+                    <Link href={item.href}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className={`h-9 w-9 ${isActiveLink(item.href) ? 'bg-muted' : ''}`}
+                      >
+                        <item.icon className="h-5 w-5" />
+                      </Button>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="font-medium">{item.label}</p>
+                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
             </>
           ) : (
             // Landing page nav
@@ -266,7 +218,7 @@ const Navbar = () => {
         </nav>
 
         {/* Right Section */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           {user && (
             <>
               {/* Premium Badge */}
