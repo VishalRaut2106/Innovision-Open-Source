@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Brain, TrendingUp, Eye, Headphones, Hand } from "lucide-react";
+import { ArrowLeft, Brain, TrendingUp, Eye, Headphones, Hand, Crown } from "lucide-react";
 import Link from "next/link";
 import { usePersonalization } from "@/hooks/usePersonalization";
 import { Progress } from "@/components/ui/progress";
 import PremiumDialog from "@/components/PremiumDialog";
+import { PageBackground, GridPattern, PageHeader, ScrollReveal, HoverCard } from "@/components/ui/PageWrapper";
 
 export default function PersonalizationPage() {
   const { user, loading } = useAuth();
@@ -94,21 +95,29 @@ export default function PersonalizationPage() {
   const detectedStyle = learningStyle || profile?.learningStyle;
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <div className="mb-6">
-          <Link href="/features">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Features
-            </Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background relative">
+      <PageBackground variant="profile" />
+      <GridPattern opacity={0.02} />
+      
+      <div className="max-w-6xl mx-auto p-6 space-y-6 relative z-10">
+        <ScrollReveal>
+          <div className="mb-6">
+            <Link href="/features">
+              <Button variant="ghost" size="sm" className="hover:bg-muted/50">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Features
+              </Button>
+            </Link>
+          </div>
+        </ScrollReveal>
 
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold">AI-Powered Personalization</h1>
-          <p className="text-muted-foreground">Advanced learning recommendations using reinforcement learning</p>
-        </div>
+        <PageHeader
+          icon={Brain}
+          iconColor="text-indigo-500"
+          title="AI-Powered Personalization"
+          description="Advanced learning recommendations using reinforcement learning"
+          badge="🧠 Premium Feature"
+        />
 
         <PremiumDialog
           open={showPremiumDialog}
@@ -117,20 +126,28 @@ export default function PersonalizationPage() {
         />
 
         {!premiumStatus.isPremium ? (
-          <div className="text-center p-12 border-2 border-dashed rounded-lg">
-            <Brain className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-            <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
-            <p className="text-muted-foreground mb-4">
-              AI-Powered Personalization is only available for Premium users.
-            </p>
-            <Button onClick={() => router.push("/premium")} className="bg-yellow-500 hover:bg-yellow-600 text-black">
-              Upgrade to Premium
-            </Button>
-          </div>
+          <ScrollReveal delay={100}>
+            <div className="text-center p-12 border-2 border-dashed rounded-xl bg-card/50 backdrop-blur-sm">
+              <Brain className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
+              <p className="text-muted-foreground mb-6">
+                AI-Powered Personalization is only available for Premium users.
+              </p>
+              <Button 
+                onClick={() => router.push("/premium")} 
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                Upgrade to Premium
+              </Button>
+            </div>
+          </ScrollReveal>
         ) : (
           <>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
+              <ScrollReveal delay={100}>
+              <HoverCard>
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Brain className="w-6 h-6 text-blue-500" />
@@ -193,8 +210,12 @@ export default function PersonalizationPage() {
                   </div>
                 </CardContent>
               </Card>
+              </HoverCard>
+              </ScrollReveal>
 
-              <Card>
+              <ScrollReveal delay={150}>
+              <HoverCard>
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <TrendingUp className="w-6 h-6 text-green-500" />
@@ -244,9 +265,13 @@ export default function PersonalizationPage() {
                   </div>
                 </CardContent>
               </Card>
+              </HoverCard>
+              </ScrollReveal>
             </div>
 
-            <Card>
+            <ScrollReveal delay={200}>
+            <HoverCard>
+            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
               <CardHeader>
                 <CardTitle>Recent Learning Preferences</CardTitle>
                 <CardDescription>Top content types based on your interactions</CardDescription>
@@ -277,6 +302,8 @@ export default function PersonalizationPage() {
                 )}
               </CardContent>
             </Card>
+            </HoverCard>
+            </ScrollReveal>
           </>
         )}
       </div>

@@ -19,15 +19,11 @@ export default function GamificationDashboard({ userId }) {
 
   console.log("GamificationDashboard - XP from context:", xp);
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     fetchGamificationStats();
-
-  //     // Refresh stats every 5 seconds for real-time updates
-  //     const interval = setInterval(fetchGamificationStats, 5000);
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [userId]);
+  useEffect(() => {
+    if (userId) {
+      fetchGamificationStats();
+    }
+  }, [userId]);
 
   const fetchGamificationStats = async () => {
     try {
@@ -67,8 +63,8 @@ export default function GamificationDashboard({ userId }) {
     }
   };
 
-  const xpToNextLevel = stats.level * 1000;
-  const xpProgress = (xp % 1000) / 10;
+  const xpToNextLevel = 500;
+  const xpProgress = (xp % 500) / 5;
 
   return (
     <div className="space-y-4">
@@ -137,7 +133,7 @@ export default function GamificationDashboard({ userId }) {
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm">Progress to Level {stats.level + 1}</CardTitle>
             <span className="text-xs text-muted-foreground">
-              {xp % 1000} / {xpToNextLevel}
+              {xp % 500} / {xpToNextLevel}
             </span>
           </div>
         </CardHeader>

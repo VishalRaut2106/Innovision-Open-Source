@@ -8,6 +8,7 @@ import { ArrowLeft, Download, Wifi, WifiOff, CheckCircle, Loader2, Crown } from 
 import Link from "next/link";
 import { useOffline } from "@/hooks/useOffline";
 import { toast } from "sonner";
+import { PageBackground, GridPattern, PageHeader, ScrollReveal, HoverCard } from "@/components/ui/PageWrapper";
 
 export default function OfflinePage() {
   const { user, loading } = useAuth();
@@ -84,24 +85,33 @@ export default function OfflinePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <div className="mb-6">
-          <Link href="/features">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Features
-            </Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background relative">
+      <PageBackground variant="courses" />
+      <GridPattern opacity={0.02} />
+      
+      <div className="max-w-6xl mx-auto p-6 space-y-6 relative z-10">
+        <ScrollReveal>
+          <div className="mb-6">
+            <Link href="/features">
+              <Button variant="ghost" size="sm" className="hover:bg-muted/50">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Features
+              </Button>
+            </Link>
+          </div>
+        </ScrollReveal>
 
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold">Offline Learning</h1>
-          <p className="text-muted-foreground">Download courses and learn anywhere, anytime</p>
-        </div>
+        <PageHeader
+          icon={Download}
+          iconColor="text-green-500"
+          title="Offline Learning"
+          description="Download courses and learn anywhere, anytime"
+          badge="📥 Learn Offline"
+        />
 
         {!premiumStatus.isPremium && (
-          <Card className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-2 border-yellow-500/30">
+          <ScrollReveal delay={100}>
+          <Card className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-2 border-yellow-500/30 backdrop-blur-sm">
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
@@ -129,10 +139,12 @@ export default function OfflinePage() {
               </div>
             </CardContent>
           </Card>
+          </ScrollReveal>
         )}
 
         {premiumStatus.isPremium && (
-          <Card className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border-2 border-green-500/30">
+          <ScrollReveal delay={100}>
+          <Card className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border-2 border-green-500/30 backdrop-blur-sm">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3 justify-center">
                 <Crown className="h-6 w-6 text-yellow-600" />
@@ -140,9 +152,11 @@ export default function OfflinePage() {
               </div>
             </CardContent>
           </Card>
+          </ScrollReveal>
         )}
 
-        <Card className={isOnline ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950"}>
+        <ScrollReveal delay={150}>
+        <Card className={`backdrop-blur-sm ${isOnline ? "bg-green-50/80 dark:bg-green-950/80" : "bg-red-50/80 dark:bg-red-950/80"}`}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-center gap-3">
               {isOnline ? (
@@ -161,9 +175,12 @@ export default function OfflinePage() {
             </div>
           </CardContent>
         </Card>
+        </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
+          <ScrollReveal delay={200}>
+          <HoverCard>
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50">
             <CardHeader>
               <CardTitle>Available Courses</CardTitle>
               <CardDescription>Download courses for offline access</CardDescription>
@@ -226,8 +243,12 @@ export default function OfflinePage() {
               )}
             </CardContent>
           </Card>
+          </HoverCard>
+          </ScrollReveal>
 
-          <Card>
+          <ScrollReveal delay={250}>
+          <HoverCard>
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50">
             <CardHeader>
               <CardTitle>Downloaded Courses</CardTitle>
               <CardDescription>
@@ -266,9 +287,12 @@ export default function OfflinePage() {
               )}
             </CardContent>
           </Card>
+          </HoverCard>
+          </ScrollReveal>
         </div>
 
-        <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+        <ScrollReveal delay={300}>
+        <Card className="bg-blue-50/80 dark:bg-blue-950/80 border-blue-200 dark:border-blue-800 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-blue-900 dark:text-blue-100">How Offline Mode Works</CardTitle>
           </CardHeader>
@@ -284,6 +308,7 @@ export default function OfflinePage() {
             </ul>
           </CardContent>
         </Card>
+        </ScrollReveal>
       </div>
     </div>
   );

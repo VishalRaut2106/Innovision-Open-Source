@@ -9,6 +9,7 @@ import Link from "next/link";
 import { projectTemplates, getUserProjects } from "@/lib/projects";
 import { Progress } from "@/components/ui/progress";
 import PremiumDialog from "@/components/PremiumDialog";
+import { PageBackground, GridPattern, PageHeader, ScrollReveal, HoverCard, StaggerChildren } from "@/components/ui/PageWrapper";
 
 export default function ProjectsPage() {
   const { user, loading } = useAuth();
@@ -75,23 +76,29 @@ export default function ProjectsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-6 space-y-6">
-        <div className="mb-6">
-          <Link href="/features">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Features
-            </Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background relative">
+      <PageBackground variant="default" />
+      <GridPattern opacity={0.02} />
+      
+      <div className="max-w-7xl mx-auto p-6 space-y-6 relative z-10">
+        <ScrollReveal>
+          <div className="mb-6">
+            <Link href="/features">
+              <Button variant="ghost" size="sm" className="hover:bg-muted/50">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Features
+              </Button>
+            </Link>
+          </div>
+        </ScrollReveal>
 
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold">Project-Based Learning</h1>
-          <p className="text-muted-foreground">
-            Build real-world projects with mentor guidance and professional reviews
-          </p>
-        </div>
+        <PageHeader
+          icon={Briefcase}
+          iconColor="text-blue-500"
+          title="Project-Based Learning"
+          description="Build real-world projects with mentor guidance and professional reviews"
+          badge="🚀 Premium Feature"
+        />
 
         <PremiumDialog
           open={showPremiumDialog}
@@ -100,22 +107,29 @@ export default function ProjectsPage() {
         />
 
         {!premiumStatus.isPremium ? (
-          <div className="text-center p-12 border-2 border-dashed rounded-lg">
-            <Briefcase className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-            <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
-            <p className="text-muted-foreground mb-4">
-              Project-Based Learning is only available for Premium users.
-            </p>
-            <Button onClick={() => router.push("/premium")} className="bg-yellow-500 hover:bg-yellow-600 text-black">
-              <Crown className="w-4 h-4 mr-2" />
-              Upgrade to Premium
-            </Button>
-          </div>
+          <ScrollReveal delay={100}>
+            <div className="text-center p-12 border-2 border-dashed rounded-xl bg-card/50 backdrop-blur-sm">
+              <Briefcase className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
+              <p className="text-muted-foreground mb-6">
+                Project-Based Learning is only available for Premium users.
+              </p>
+              <Button 
+                onClick={() => router.push("/premium")} 
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                Upgrade to Premium
+              </Button>
+            </div>
+          </ScrollReveal>
         ) : (
           <>
             {/* Stats */}
+            <ScrollReveal delay={100}>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card>
+              <HoverCard>
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3">
                     <Briefcase className="w-8 h-8 text-blue-500" />
@@ -126,7 +140,9 @@ export default function ProjectsPage() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              </HoverCard>
+              <HoverCard>
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3">
                     <Award className="w-8 h-8 text-green-500" />
@@ -137,7 +153,9 @@ export default function ProjectsPage() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              </HoverCard>
+              <HoverCard>
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3">
                     <Users className="w-8 h-8 text-purple-500" />
@@ -148,7 +166,9 @@ export default function ProjectsPage() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              </HoverCard>
+              <HoverCard>
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3">
                     <Clock className="w-8 h-8 text-orange-500" />
@@ -159,10 +179,14 @@ export default function ProjectsPage() {
                   </div>
                 </CardContent>
               </Card>
+              </HoverCard>
             </div>
+            </ScrollReveal>
 
             {/* My Projects */}
-            <Card>
+            <ScrollReveal delay={150}>
+            <HoverCard>
+            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
@@ -170,7 +194,7 @@ export default function ProjectsPage() {
                     <CardDescription>Track your ongoing and completed projects</CardDescription>
                   </div>
                   <Link href="/features/projects/create">
-                    <Button>
+                    <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
                       <Plus className="w-4 h-4 mr-2" />
                       New Project
                     </Button>
@@ -231,17 +255,21 @@ export default function ProjectsPage() {
                 )}
               </CardContent>
             </Card>
+            </HoverCard>
+            </ScrollReveal>
 
             {/* Project Templates */}
-            <Card>
+            <ScrollReveal delay={200}>
+            <HoverCard>
+            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
               <CardHeader>
                 <CardTitle>Project Templates</CardTitle>
                 <CardDescription>Choose a template to get started quickly</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-4" staggerDelay={80}>
                   {projectTemplates.map((template) => (
-                    <div key={template.id} className="p-4 border rounded-lg">
+                    <div key={template.id} className="p-4 border rounded-lg bg-background/50 hover:bg-muted/50 transition-colors">
                       <h3 className="font-semibold mb-2">{template.title}</h3>
                       <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
                       <div className="flex gap-2 mb-3">
@@ -253,15 +281,17 @@ export default function ProjectsPage() {
                         </span>
                       </div>
                       <Link href={`/features/projects/create?template=${template.id}`}>
-                        <Button variant="outline" size="sm" className="w-full">
+                        <Button variant="outline" size="sm" className="w-full hover:bg-primary/10">
                           Use Template
                         </Button>
                       </Link>
                     </div>
                   ))}
-                </div>
+                </StaggerChildren>
               </CardContent>
             </Card>
+            </HoverCard>
+            </ScrollReveal>
           </>
         )}
       </div>

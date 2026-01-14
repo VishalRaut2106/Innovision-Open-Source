@@ -1,11 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import { IoClose } from "react-icons/io5";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import {
-  User,
   LogIn,
+  LogOut,
   Palette,
   Trophy,
   BarChart3,
@@ -17,11 +16,18 @@ import {
   BookOpen,
   Crown,
   MoonStar,
+  Home,
+  MessageSquare,
+  ChevronDown,
+  Settings,
+  User,
+  Menu,
+  X,
+  Zap,
+  Globe,
 } from "lucide-react";
-import { CgDetailsMore } from "react-icons/cg";
 import { Sun, Moon } from "lucide-react";
 import Image from "next/image";
-import GoogleTranslate from "../GoogleTranslate";
 import PremiumGoogleTranslate from "../PremiumGoogleTranslate";
 import { useContext } from "react";
 import xpContext from "@/contexts/xp";
@@ -29,41 +35,60 @@ import { useNightMode } from "@/contexts/nightMode";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/auth";
-import Logout from "./Logout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  const [sidebar, setSidebar] = useState(false);
-  const [theme, setTheme] = useState("light"); // Default theme: light
+  const [theme, setTheme] = useState("light");
   const [streak, setStreak] = useState(0);
   const [isPremium, setIsPremium] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { xp, show, changed } = useContext(xpContext);
   const { nightMode, toggleNightMode } = useNightMode();
   const router = useRouter();
   const pathname = usePathname();
 
-  // Helper function to check if a link is active
   const isActiveLink = (href) => {
     return pathname === href || (href === "/roadmap" && pathname === "/");
   };
-  // Load saved theme or use default
+
+  const isActiveGroup = (paths) => {
+    return paths.some(p => pathname?.startsWith(p) || isActiveLink(p));
+  };
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
     setTheme(savedTheme);
-    document.documentElement.className = savedTheme; // Apply theme globally
+    document.documentElement.className = savedTheme;
   }, []);
 
-  // Toggle theme
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.className = newTheme; // Apply theme globally
+    document.documentElement.className = newTheme;
   };
 
-  // Fetch streak when user is logged in
   useEffect(() => {
     if (user?.email) {
       fetchStreak(user.email);
@@ -71,7 +96,6 @@ const Navbar = () => {
     }
   }, [user]);
 
-  // Function to fetch premium status
   const fetchPremiumStatus = async (email) => {
     try {
       const res = await fetch(`/api/premium/status`);
@@ -82,7 +106,6 @@ const Navbar = () => {
     }
   };
 
-  // Function to fetch streak
   const fetchStreak = async (email) => {
     try {
       const res = await fetch(`/api/gamification/stats?userId=${email}`);
@@ -93,22 +116,9 @@ const Navbar = () => {
     }
   };
 
-  // Poll for streak updates every 10 seconds
-  // useEffect(() => {
-  //   if (user?.email) {
-  //     const interval = setInterval(() => {
-  //       fetchStreak(user.email);
-  //     }, 10000); // Update every 10 seconds
-
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [user]);
-
-  // Sign out user
   const signOutUser = async () => {
     try {
       await logout();
-      // Force full page reload to clear all state
       window.location.replace("/");
     } catch (error) {
       console.error("Logout error:", error);
@@ -116,458 +126,456 @@ const Navbar = () => {
     }
   };
 
-  // Close sidebar on click outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Check if the clicked target is outside the sidebar and the button that opens it
-      const sidebarElement = document.querySelector(".sidebar");
-      const buttonElement = document.querySelector("button"); // The button to open sidebar
+  // Navigation items for logged-in users
+  const createMenuItems = [
+    { href: "/generate", label: "AI Course Generator", icon: Sparkles, description: "Create courses with AI" },
+    { href: "/studio", label: "Course Studio", icon: Palette, description: "Design custom courses" },
+    { href: "/content-ingestion", label: "Content Ingestion", icon: Upload, description: "Import existing content" },
+    { href: "/youtube-course", label: "YouTube Course", icon: Youtube, description: "Learn from YouTube" },
+  ];
 
-      if (
-        sidebarElement &&
-        !sidebarElement.contains(event.target) &&
-        !buttonElement.contains(event.target) &&
-        event.target.textContent !== "Logout" &&
-        event.target.textContent !== "Cancel"
-      ) {
-        setSidebar(false); // Close sidebar if the click is outside
-      }
-    };
+  const learnMenuItems = [
+    { href: "/roadmap", label: "My Courses", icon: Home, description: "Your learning dashboard" },
+    { href: "/courses", label: "Browse Courses", icon: BookOpen, description: "Explore all courses" },
+    { href: "/code-editor", label: "Code Editor", icon: Code2, description: "Practice coding" },
+  ];
 
-    // Add event listener when sidebar is open
-    if (sidebar) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+  const moreMenuItems = [
+    { href: "/features", label: "Features", icon: Trophy, description: "Platform features" },
+    { href: "/gamification", label: "Achievements", icon: Zap, description: "Badges & rewards" },
+    { href: "/demo", label: "Demo", icon: BarChart3, description: "See how it works" },
+    { href: "/contact", label: "Contact", icon: MessageSquare, description: "Get in touch" },
+  ];
 
-    // Clean up the event listener when the component unmounts or sidebar is closed
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [sidebar]);
+  // Landing page navigation
+  const landingNavItems = [
+    { id: "features", label: "Features" },
+    { id: "how-it-works", label: "How it Works" },
+    { id: "faq", label: "FAQ" },
+    { href: "/contact", label: "Contact" },
+  ];
 
   return (
-    <div className="p-2 w-screen border-b fixed top-0 left-0 bg-background/80 backdrop-blur-xl z-50 shadow-lg border-slate-200/20">
-      <div className="flex w-full px-3 justify-between lg:px-10 items-center">
-        {sidebar && (
-          <motion.div
-            initial={{
-              opacity: 0,
-              x: -360,
-            }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -360 }}
-            transition={{
-              duration: 0.1,
-              ease: "easeOut",
-            }}
-            className="w-[360px] h-screen bg-background/95 backdrop-blur-xl fixed top-0 left-0 flex flex-col justify-between z-10 sidebar border-r border-slate-200/20 shadow-2xl"
-          >
-            <div
-              className="flex flex-col gap-3 overflow-y-auto flex-1 p-4 pb-0"
-              style={{ maxHeight: "calc(100vh - 100px)" }}
-            >
-              <Button
-                variant={"ghost"}
-                className="items-center w-max hover:bg-slate-100/80 transition-all duration-200"
-                onClick={() => setSidebar(false)}
-              >
-                <IoClose className="text-lg" />
-              </Button>
-              {user ? (
-                <nav>
-                  <ul className="flex flex-col max-md:text-lg ml-4 gap-3 ">
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href={user ? `/roadmap` : "/"}
-                        className={`block py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/roadmap") || isActiveLink("/")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        Home
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/generate"
-                        className={`block py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/generate")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        Generate
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/courses"
-                        className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          pathname?.startsWith("/courses")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        <BookOpen className="h-4 w-4" />
-                        Courses
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/studio"
-                        className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/studio")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        <Palette className="h-4 w-4" />
-                        Studio
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/content-ingestion"
-                        className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/content-ingestion")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        <Upload className="h-4 w-4" />
-                        Content Ingestion
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/code-editor"
-                        className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/code-editor")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        <Code2 className="h-4 w-4" />
-                        Code Editor
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/youtube-course"
-                        className={`flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/youtube-course")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        <Youtube className="h-4 w-4" />
-                        YouTube Course
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/features"
-                        className={`block py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          pathname?.startsWith("/features")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        Features
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/demo"
-                        className={`block py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/demo")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        See demo
-                      </Link>
-                    </li>
-                    <li onClick={() => setSidebar(false)}>
-                      <Link
-                        href="/contact"
-                        className={`block py-2 px-3 rounded-lg transition-all duration-200 hover:bg-slate-100/80 ${
-                          isActiveLink("/contact")
-                            ? "bg-blue-50 text-blue-600 font-semibold border-l-4 border-blue-500"
-                            : ""
-                        }`}
-                      >
-                        Contact
-                      </Link>
-                    </li>
-                  </ul>
+    <header className="h-16 w-full border-b fixed top-0 left-0 bg-background/80 backdrop-blur-xl z-50 border-border/50">
+      <div className="h-full max-w-7xl mx-auto px-4 flex items-center justify-between">
+        {/* Logo */}
+        <Link
+          href={user ? `/roadmap` : "/"}
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <Image src="/InnoVision_LOGO-removebg-preview.png" alt="logo" width={40} height={40} />
+          <span className="text-xl font-bold hidden sm:block">InnoVision</span>
+        </Link>
 
-                  {/* Google Translate */}
-                  <div className="mt-4 ml-4 pt-4 border-t border-slate-200/50">
-                    <div className="py-2 px-3">
-                      <p className="text-sm font-medium mb-2">Translate</p>
-                      <PremiumGoogleTranslate />
-                    </div>
-                  </div>
-                </nav>
-              ) : (
-                <nav>
-                  <ul className="flex flex-col max-md:text-lg ml-4 gap-3 ">
-                    <li
-                      onClick={() => {
-                        setSidebar(false);
-                        document.getElementById("features")?.scrollIntoView({
-                          behavior: "smooth",
-                        });
-                      }}
-                    >
-                      <Link href="#features" scroll={false}>
-                        Features
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-1">
+          {user ? (
+            <>
+              {/* Create Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className={`gap-1 ${isActiveGroup(['/generate', '/studio', '/content-ingestion', '/youtube-course']) ? 'bg-muted' : ''}`}>
+                    Create
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56">
+                  {createMenuItems.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link href={item.href} className="flex items-start gap-3 p-2">
+                        <item.icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
+                        <div>
+                          <div className="font-medium">{item.label}</div>
+                          <div className="text-xs text-muted-foreground">{item.description}</div>
+                        </div>
                       </Link>
-                    </li>
-                    <li
-                      onClick={() => {
-                        setSidebar(false);
-                        document.getElementById("how-it-works")?.scrollIntoView({
-                          behavior: "smooth",
-                        });
-                      }}
-                    >
-                      <Link href="#how-it-works" scroll={false}>
-                        How to use
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Learn Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className={`gap-1 ${isActiveGroup(['/roadmap', '/courses', '/code-editor']) ? 'bg-muted' : ''}`}>
+                    Learn
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56">
+                  {learnMenuItems.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link href={item.href} className="flex items-start gap-3 p-2">
+                        <item.icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
+                        <div>
+                          <div className="font-medium">{item.label}</div>
+                          <div className="text-xs text-muted-foreground">{item.description}</div>
+                        </div>
                       </Link>
-                    </li>
-                    <li
-                      onClick={() => {
-                        setSidebar(false);
-                        document.getElementById("faq")?.scrollIntoView({
-                          behavior: "smooth",
-                        });
-                      }}
-                    >
-                      <Link href="#faq" scroll={false}>
-                        FAQs
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* More Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className={`gap-1 ${isActiveGroup(['/features', '/gamification', '/demo', '/contact']) ? 'bg-muted' : ''}`}>
+                    More
+                    <ChevronDown className="h-4 w-4 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56">
+                  {moreMenuItems.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link href={item.href} className="flex items-start gap-3 p-2">
+                        <item.icon className="h-5 w-5 mt-0.5 text-muted-foreground" />
+                        <div>
+                          <div className="font-medium">{item.label}</div>
+                          <div className="text-xs text-muted-foreground">{item.description}</div>
+                        </div>
                       </Link>
-                    </li>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          ) : (
+            // Landing page nav
+            <>
+              {landingNavItems.map((item) => (
+                <Button
+                  key={item.id || item.href}
+                  variant="ghost"
+                  asChild={!!item.href}
+                  onClick={() => {
+                    if (item.id) {
+                      document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                >
+                  {item.href ? (
+                    <Link href={item.href}>{item.label}</Link>
+                  ) : (
+                    <span className="cursor-pointer">{item.label}</span>
+                  )}
+                </Button>
+              ))}
+            </>
+          )}
+        </nav>
 
-                    <li onClick={() => setSidebar(false)}>
-                      <Link href="/contact">Contact</Link>
-                    </li>
-                  </ul>
-
-                  {/* Google Translate for non-logged in users */}
-                  <div className="mt-4 ml-4 pt-4 border-t border-slate-200/50">
-                    <div className="py-2 px-3">
-                      <p className="text-sm font-medium mb-2">Translate</p>
-                      <PremiumGoogleTranslate />
-                    </div>
-                  </div>
-                </nav>
-              )}
-            </div>
-            <div className="p-4 pt-3 border-t border-slate-200/20 bg-background/95">
-              <div className="flex items-center">
-                {user ? (
-                  <div className="flex items-center">
-                    <Link href={"/profile"} onClick={() => setSidebar(false)} className="relative">
-                      <Avatar className={"w-7 mx-1 h-7"}>
-                        <AvatarImage src={user?.image} alt={"logo"} />
-                        <AvatarFallback>{user?.name?.[0].toUpperCase() || "U"}</AvatarFallback>
-                      </Avatar>
-                      {isPremium && (
-                        <span className="absolute -bottom-1 -right-0 bg-yellow-500 text-black text-[8px] font-bold px-1 rounded">
-                          PRO
-                        </span>
-                      )}
-                    </Link>
-                    <Button
-                      onClick={toggleNightMode}
-                      variant={"ghost"}
-                      className={`border-0 ml-1 hover:bg-slate-100/80 transition-all duration-200 ${nightMode ? 'text-amber-500' : ''}`}
-                      title={nightMode ? "Disable Night Mode" : "Enable Night Mode"}
-                    >
-                      <MoonStar className={`w-5 h-5 ${nightMode ? 'fill-amber-500' : ''}`} />
-                    </Button>
-                    <Button
-                      onClick={toggleTheme}
-                      variant={"ghost"}
-                      className="border-0 ml-1 hover:bg-slate-100/80 transition-all duration-200"
-                    >
-                      {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-                    </Button>
-                    <Logout onConfirm={signOutUser}></Logout>
-                  </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={toggleNightMode}
-                      variant={"ghost"}
-                      className={`border-0 hover:bg-slate-100/80 transition-all duration-200 ${nightMode ? 'text-amber-500' : ''}`}
-                    >
-                      <MoonStar className={`w-5 h-5 ${nightMode ? 'fill-amber-500' : ''}`} />
-                    </Button>
-                    <Button
-                      onClick={toggleTheme}
-                      variant={"ghost"}
-                      className="border-0 hover:bg-slate-100/80 transition-all duration-200"
-                    >
-                      {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-                    </Button>
-                    <Link href="/login" onClick={() => setSidebar(false)}>
-                      <Button size="sm">
-                        <LogIn className="w-4 h-4 mr-1"></LogIn>Login
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        )}
-        <div className="sm:w-[120px] w-[50px]">
-          <button
-            className="cursor-pointer p-2 rounded-lg hover:bg-slate-100/80 transition-all duration-200 text-2xl"
-            onClick={(e) => {
-              setSidebar(true);
-              e.stopPropagation();
-            }}
-          >
-            <CgDetailsMore />
-          </button>
-        </div>
-
-        <div className="flex items-center gap-1 ">
-          <Link
-            href={user ? `/roadmap` : "/"}
-            className="flex gap-1 items-center hover:scale-105 transition-transform duration-200"
-          >
-            <Image src="/InnoVision_LOGO-removebg-preview.png" alt="logo" width={48} height={48} />
-
-            <h2 className="text-xl md:text-3xl font-extrabold">InnoVision</h2>
-          </Link>
-        </div>
-        <div className="flex items-center gap-2 sm:w-auto w-22 justify-center">
+        {/* Right Section */}
+        <div className="flex items-center gap-2">
           {user && (
             <>
+              {/* Premium Badge */}
               {isPremium && (
-                <Link
-                  href="/premium"
-                  className="flex gap-2 items-center rounded-2xl border-2 px-4 py-2 border-yellow-500/50 bg-yellow-50/50 dark:bg-yellow-950/20 hover:scale-105 transition-transform duration-200"
-                  title="Premium Member"
-                >
-                  <Crown className="h-4 w-4 text-yellow-600" />
-                  <span className="text-yellow-900 dark:text-yellow-400 font-bold max-sm:hidden">Premium</span>
+                <Link href="/premium" className="hidden sm:flex">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 hover:border-yellow-500/50 transition-colors">
+                    <Crown className="h-4 w-4 text-yellow-600" />
+                    <span className="text-sm font-semibold text-yellow-700 dark:text-yellow-400">PRO</span>
+                  </div>
                 </Link>
               )}
+
+              {/* XP */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="flex gap-2 items-center relative rounded-2xl border-2 px-4 py-2 border-green-500/50 bg-green-50/50 dark:bg-green-950/20 cursor-help">
+                  <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/30 cursor-help relative">
                     <Sparkles className="h-4 w-4 text-green-500" />
-                    <span className="text-green-900 dark:text-green-400 font-bold">
-                      {xp}
-                      {show && (
-                        <AnimatePresence>
-                          <motion.div
-                            initial={{
-                              opacity: 0,
-                              scale: 0.5,
-                              y: 10,
-                            }}
-                            animate={{
-                              opacity: 1,
-                              scale: 1,
-                              y: 0,
-                            }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{
-                              duration: 0.3,
-                              ease: "easeOut",
-                            }}
-                            className="absolute text-green-600 right-0 w-7"
-                          >
-                            <p>+{changed}</p>
-                          </motion.div>
-                        </AnimatePresence>
-                      )}
-                    </span>
+                    <span className="text-sm font-semibold text-green-700 dark:text-green-400">{xp}</span>
+                    {show && (
+                      <motion.span
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: -10 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute -top-2 right-0 text-xs text-green-500 font-bold"
+                      >
+                        +{changed}
+                      </motion.span>
+                    )}
                   </div>
                 </TooltipTrigger>
-                <TooltipContent variant="success" side="bottom">
-                  <div className="text-center">
-                    <p className="font-bold">Experience Points</p>
-                    <p className="text-xs opacity-90">Level {Math.floor(xp / 1000) + 1}</p>
-                  </div>
+                <TooltipContent>
+                  <p className="font-medium">Level {Math.floor(xp / 500) + 1}</p>
+                  <p className="text-xs text-muted-foreground">{xp} XP earned</p>
                 </TooltipContent>
               </Tooltip>
+
+              {/* Streak */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="flex gap-2 items-center rounded-2xl border-2 px-4 py-2 border-orange-500/50 bg-orange-50/50 dark:bg-orange-950/20 cursor-help">
-                    <Flame className={`h-4 w-4 ${streak >= 7 ? 'text-red-500 animate-pulse' : 'text-orange-500'}`} 
-                      style={{ 
-                        filter: streak >= 7 ? 'drop-shadow(0 0 4px rgba(239,68,68,0.6))' : 'none'
-                      }}
-                    />
-                    <span className={`font-bold ${streak >= 30 ? 'text-red-500' : streak >= 7 ? 'text-orange-500' : 'text-orange-600 dark:text-orange-400'}`}>
+                  <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 cursor-help">
+                    <Flame className={`h-4 w-4 ${streak >= 7 ? 'text-red-500' : 'text-orange-500'}`} />
+                    <span className={`text-sm font-semibold ${streak >= 7 ? 'text-red-600 dark:text-red-400' : 'text-orange-700 dark:text-orange-400'}`}>
                       {streak}
                     </span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent variant="warning" side="bottom">
-                  <div className="text-center">
-                    <p className="font-bold">{streak} Day Streak!</p>
-                    <p className="text-xs opacity-90">Keep learning daily</p>
-                  </div>
+                <TooltipContent>
+                  <p className="font-medium">{streak} Day Streak!</p>
+                  <p className="text-xs text-muted-foreground">Keep learning daily</p>
                 </TooltipContent>
               </Tooltip>
             </>
           )}
-          <div className="max-sm:hidden flex items-center gap-2">
+
+          {/* Theme & Night Mode */}
+          <div className="hidden sm:flex items-center">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={toggleNightMode}
-                  variant={"ghost"}
-                  className={`border-0 hover:bg-slate-100/80 transition-all duration-200 p-2 ${nightMode ? 'text-amber-500' : ''}`}
+                  className={nightMode ? 'text-amber-500' : ''}
                 >
-                  <MoonStar className={`w-5 h-5 ${nightMode ? 'fill-amber-500 animate-night-pulse' : ''}`} />
+                  <MoonStar className={`h-5 w-5 ${nightMode ? 'fill-amber-500' : ''}`} />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <p>{nightMode ? "Disable" : "Enable"} Night Mode</p>
-                <p className="text-xs opacity-70">Blue light filter for eye comfort</p>
-              </TooltipContent>
+              <TooltipContent>Night Mode</TooltipContent>
             </Tooltip>
-            <Button
-              onClick={toggleTheme}
-              variant={"ghost"}
-              className="border-0 hover:bg-slate-100/80 transition-all duration-200 p-2"
-            >
-              {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+
+            <Button variant="ghost" size="icon" onClick={toggleTheme}>
+              {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             </Button>
-            {user ? (
-              <Link href={"/profile"} className="hover:scale-110 transition-transform duration-200 relative">
-                <Avatar className="w-8 h-8 ring-2 ring-blue-500/20 hover:ring-blue-500/40 transition-all duration-200">
-                  <AvatarImage src={user?.image} alt={"logo"} />
-                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                    {user?.name ? user?.name[0].toUpperCase() : ""}
-                  </AvatarFallback>
-                </Avatar>
-                {isPremium && (
-                  <span className="absolute -bottom-1 -right-1 bg-yellow-500 text-black text-[10px] font-bold px-1 rounded">
-                    PRO
-                  </span>
-                )}
-              </Link>
-            ) : (
-              <Link href="/login">
-                <Button size="sm">Login</Button>
-              </Link>
-            )}
           </div>
+
+          {/* User Menu or Login */}
+          {user ? (
+            <div className="flex items-center gap-2">
+              {/* Profile Avatar - Direct Link */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link href="/profile" className="relative">
+                    <Avatar className="h-9 w-9 ring-2 ring-transparent hover:ring-blue-500/50 transition-all cursor-pointer">
+                      <AvatarImage src={user?.image} alt={user?.name} />
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white">
+                        {user?.name?.[0]?.toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    {isPremium && (
+                      <span className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-yellow-500 flex items-center justify-center">
+                        <Crown className="h-2.5 w-2.5 text-black" />
+                      </span>
+                    )}
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>View Profile</TooltipContent>
+              </Tooltip>
+
+              {/* Settings Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-9 w-9">
+                    <Settings className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col">
+                      <span className="font-medium">{user?.name}</span>
+                      <span className="text-xs text-muted-foreground truncate">{user?.email}</span>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile" className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem asChild>
+                    <Link href="/gamification" className="flex items-center gap-2">
+                      <Trophy className="h-4 w-4" />
+                      Achievements
+                    </Link>
+                  </DropdownMenuItem>
+
+                  {!isPremium && (
+                    <DropdownMenuItem asChild>
+                      <Link href="/premium" className="flex items-center gap-2 text-yellow-600">
+                        <Crown className="h-4 w-4" />
+                        Upgrade to Pro
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+
+                  <DropdownMenuSeparator />
+
+                  {/* Mobile only stats */}
+                  <div className="sm:hidden px-2 py-1.5 space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">XP</span>
+                    <span className="font-medium text-green-600">{xp}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Streak</span>
+                    <span className="font-medium text-orange-600">{streak} days</span>
+                  </div>
+                </div>
+                <DropdownMenuSeparator className="sm:hidden" />
+
+                <div className="px-2 py-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Night Mode</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={toggleNightMode}
+                      className={`h-8 w-8 p-0 ${nightMode ? 'text-amber-500' : ''}`}
+                    >
+                      <MoonStar className={`h-4 w-4 ${nightMode ? 'fill-amber-500' : ''}`} />
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Theme</span>
+                    <Button variant="ghost" size="sm" onClick={toggleTheme} className="h-8 w-8 p-0">
+                      {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+
+                <DropdownMenuSeparator />
+
+                <div className="px-2 py-1.5">
+                  <p className="text-xs text-muted-foreground mb-1">Language</p>
+                  <PremiumGoogleTranslate />
+                </div>
+
+                <DropdownMenuSeparator />
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-500 focus:text-red-500">
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        You will be logged out from your current session.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction className="bg-destructive text-white" onClick={signOutUser}>
+                        Logout
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            </div>
+          ) : (
+            <Link href="/login">
+              <Button size="sm" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
+                <LogIn className="h-4 w-4 mr-2" />
+                Login
+              </Button>
+            </Link>
+          )}
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl"
+          >
+            <nav className="p-4 space-y-2">
+              {user ? (
+                <>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2 mb-2">Create</p>
+                  {createMenuItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      }`}
+                    >
+                      <item.icon className="h-5 w-5" />
+                      {item.label}
+                    </Link>
+                  ))}
+
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2 mb-2 mt-4">Learn</p>
+                  {learnMenuItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      }`}
+                    >
+                      <item.icon className="h-5 w-5" />
+                      {item.label}
+                    </Link>
+                  ))}
+
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2 mb-2 mt-4">More</p>
+                  {moreMenuItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      }`}
+                    >
+                      <item.icon className="h-5 w-5" />
+                      {item.label}
+                    </Link>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {landingNavItems.map((item) => (
+                    <button
+                      key={item.id || item.href}
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        if (item.id) {
+                          document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
+                        } else if (item.href) {
+                          router.push(item.href);
+                        }
+                      }}
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-muted/50 hover:text-foreground w-full text-left"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </>
+              )}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 };
 

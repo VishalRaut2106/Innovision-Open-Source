@@ -138,7 +138,7 @@ Topic: ${prompt}
             };
 
         const newXP = (stats.xp || 0) + xpGained;
-        const newLevel = Math.floor(newXP / 1000) + 1;
+        const newLevel = Math.floor(newXP / 500) + 1;
 
         transaction.set(
           statsRef,

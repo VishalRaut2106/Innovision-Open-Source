@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import PremiumCelebration from "@/components/premium/PremiumCelebration";
+import { PageBackground, GridPattern, ScrollReveal, StaggerChildren, HoverCard } from "@/components/ui/PageWrapper";
 
 export default function PremiumPage() {
   const { user } = useAuth();
@@ -181,81 +182,91 @@ export default function PremiumPage() {
 
   if (premiumStatus?.isPremium) {
     return (
-      <div className="min-h-screen bg-background py-12 px-4">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-500 rounded-full mb-4">
-              <Crown className="h-10 w-10 text-black" />
+      <div className="min-h-screen bg-background py-12 px-4 relative">
+        <PageBackground variant="premium" />
+        <GridPattern opacity={0.02} />
+        
+        <div className="max-w-2xl mx-auto text-center relative z-10">
+          <ScrollReveal>
+            <div className="mb-8">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-4 shadow-lg shadow-yellow-500/25">
+                <Crown className="h-10 w-10 text-black" />
+              </div>
+              <h1 className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
+                You're Premium! <Sparkles className="h-8 w-8 text-yellow-500" />
+              </h1>
+              <p className="text-muted-foreground">Enjoy unlimited access to all features</p>
             </div>
-            <h1 className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
-              You're Premium! <Sparkles className="h-8 w-8 text-yellow-500" />
-            </h1>
-            <p className="text-muted-foreground">Enjoy unlimited access to all features</p>
-          </div>
+          </ScrollReveal>
 
-          <Card className="p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Unlimited course generation</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Full curriculum access</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Engineering courses</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>YouTube course generation</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Studio courses</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Content Ingestion</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Code Editor & AI Builder</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Multi-language translation</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Analytics Dashboard</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>AI Personalization</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>Offline Learning</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Check className="h-5 w-5 text-green-500" />
-                <span>LMS Integration</span>
-              </div>
-            </div>
+          <ScrollReveal delay={100}>
+            <Card className="p-8 bg-card/50 backdrop-blur-sm border-border/50">
+              <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left" staggerDelay={50}>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Unlimited course generation</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Full curriculum access</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Engineering courses</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>YouTube course generation</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Studio courses</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Content Ingestion</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Code Editor & AI Builder</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Multi-language translation</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Analytics Dashboard</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>AI Personalization</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>Offline Learning</span>
+                </div>
+                <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span>LMS Integration</span>
+                </div>
+              </StaggerChildren>
 
-            <Button onClick={() => router.push("/generate")} className="w-full mt-6">
-              Start Creating Courses
-            </Button>
-          </Card>
+              <Button onClick={() => router.push("/generate")} className="w-full mt-6 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold transition-all duration-300 hover:scale-[1.02]">
+                Start Creating Courses
+              </Button>
+            </Card>
+          </ScrollReveal>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4">
+    <div className="min-h-screen bg-background py-12 px-4 relative">
+      <PageBackground variant="premium" />
+      <GridPattern opacity={0.02} />
+      
       {/* Premium Celebration Modal */}
       <PremiumCelebration 
         isOpen={showCelebration} 
@@ -265,19 +276,22 @@ export default function PremiumPage() {
         }} 
       />
       
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-500 rounded-full mb-4">
-            <Crown className="h-8 w-8 text-black" />
+      <div className="max-w-6xl mx-auto relative z-10">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-4 shadow-lg shadow-yellow-500/25">
+              <Crown className="h-8 w-8 text-black" />
+            </div>
+            <h1 className="text-4xl font-bold mb-2">Upgrade to Premium</h1>
+            <p className="text-xl text-muted-foreground">Unlock unlimited learning possibilities</p>
           </div>
-          <h1 className="text-4xl font-bold mb-2">Upgrade to Premium</h1>
-          <p className="text-xl text-muted-foreground">Unlock unlimited learning possibilities</p>
-        </div>
+        </ScrollReveal>
 
         {/* Plans Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <StaggerChildren className="grid md:grid-cols-3 gap-6 mb-12" staggerDelay={150}>
           {/* Free Plan */}
-          <Card className="p-6 border-2">
+          <HoverCard>
+            <Card className="p-6 border-2 bg-card/50 backdrop-blur-sm h-full">
             <h3 className="text-2xl font-bold mb-2">Free</h3>
             <div className="text-3xl font-bold mb-1">₹0</div>
             <div className="text-sm text-muted-foreground mb-6">forever</div>
@@ -319,9 +333,11 @@ export default function PremiumPage() {
               Current: {premiumStatus?.courseCount || 0}/3 courses used
             </div>
           </Card>
+          </HoverCard>
 
           {/* Premium Plan */}
-          <Card className="p-6 border-2 border-yellow-500 relative overflow-hidden">
+          <HoverCard>
+            <Card className="p-6 border-2 border-yellow-500 relative overflow-hidden bg-card/50 backdrop-blur-sm h-full">
             <div className="absolute top-0 right-0 bg-yellow-500 text-black px-3 py-1 text-sm font-semibold">
               POPULAR
             </div>
@@ -364,7 +380,7 @@ export default function PremiumPage() {
             <Button
               onClick={() => handleUpgrade("premium")}
               disabled={loading && selectedPlan === "premium"}
-              className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold transition-all duration-300 hover:scale-[1.02]"
             >
               {loading && selectedPlan === "premium" ? (
                 <>
@@ -399,9 +415,11 @@ export default function PremiumPage() {
               )}
             </div>
           </Card>
+          </HoverCard>
 
           {/* Education Plan */}
-          <Card className="p-6 border-2 border-blue-500 relative overflow-hidden">
+          <HoverCard>
+            <Card className="p-6 border-2 border-blue-500 relative overflow-hidden bg-card/50 backdrop-blur-sm h-full">
             <div className="absolute top-0 right-0 bg-blue-500 text-white px-3 py-1 text-sm font-semibold">
               50% OFF
             </div>
@@ -447,7 +465,7 @@ export default function PremiumPage() {
             <Button
               onClick={() => handleUpgrade("education")}
               disabled={loading && selectedPlan === "education"}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold"
+              className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold transition-all duration-300 hover:scale-[1.02]"
             >
               {loading && selectedPlan === "education" ? (
                 <>
@@ -462,77 +480,105 @@ export default function PremiumPage() {
               )}
             </Button>
           </Card>
-        </div>
+          </HoverCard>
+        </StaggerChildren>
 
         {/* All Features Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-center mb-8">All Premium Features</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="p-4 text-center">
-              <BookOpen className="h-8 w-8 mx-auto mb-2 text-blue-500" />
-              <h4 className="font-semibold text-sm">Unlimited Courses</h4>
-              <p className="text-xs text-muted-foreground">Custom, YouTube, Studio</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <GraduationCap className="h-8 w-8 mx-auto mb-2 text-green-500" />
-              <h4 className="font-semibold text-sm">Full Curriculum</h4>
-              <p className="text-xs text-muted-foreground">LKG to Class 12</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Building2 className="h-8 w-8 mx-auto mb-2 text-purple-500" />
-              <h4 className="font-semibold text-sm">Engineering</h4>
-              <p className="text-xs text-muted-foreground">All branches & semesters</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Upload className="h-8 w-8 mx-auto mb-2 text-orange-500" />
-              <h4 className="font-semibold text-sm">Content Ingestion</h4>
-              <p className="text-xs text-muted-foreground">PDFs & textbooks</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Code2 className="h-8 w-8 mx-auto mb-2 text-cyan-500" />
-              <h4 className="font-semibold text-sm">Code Editor</h4>
-              <p className="text-xs text-muted-foreground">AI Website Builder</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Languages className="h-8 w-8 mx-auto mb-2 text-pink-500" />
-              <h4 className="font-semibold text-sm">Translation</h4>
-              <p className="text-xs text-muted-foreground">Multi-language support</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <BarChart3 className="h-8 w-8 mx-auto mb-2 text-indigo-500" />
-              <h4 className="font-semibold text-sm">Analytics</h4>
-              <p className="text-xs text-muted-foreground">Performance tracking</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Brain className="h-8 w-8 mx-auto mb-2 text-red-500" />
-              <h4 className="font-semibold text-sm">AI Personalization</h4>
-              <p className="text-xs text-muted-foreground">Smart recommendations</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Wifi className="h-8 w-8 mx-auto mb-2 text-teal-500" />
-              <h4 className="font-semibold text-sm">Offline Learning</h4>
-              <p className="text-xs text-muted-foreground">Unlimited downloads</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Video className="h-8 w-8 mx-auto mb-2 text-rose-500" />
-              <h4 className="font-semibold text-sm">Multimodal</h4>
-              <p className="text-xs text-muted-foreground">Audio & video scripts</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Trophy className="h-8 w-8 mx-auto mb-2 text-amber-500" />
-              <h4 className="font-semibold text-sm">Gamification</h4>
-              <p className="text-xs text-muted-foreground">XP, badges, streaks</p>
-            </Card>
-            <Card className="p-4 text-center">
-              <Calendar className="h-8 w-8 mx-auto mb-2 text-emerald-500" />
-              <h4 className="font-semibold text-sm">LMS Integration</h4>
-              <p className="text-xs text-muted-foreground">Moodle & Canvas</p>
-            </Card>
+        <ScrollReveal delay={200}>
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-center mb-8">All Premium Features</h2>
+            <StaggerChildren className="grid grid-cols-2 md:grid-cols-4 gap-4" staggerDelay={50}>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <BookOpen className="h-8 w-8 mx-auto mb-2 text-blue-500" />
+                <h4 className="font-semibold text-sm">Unlimited Courses</h4>
+                <p className="text-xs text-muted-foreground">Custom, YouTube, Studio</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <GraduationCap className="h-8 w-8 mx-auto mb-2 text-green-500" />
+                <h4 className="font-semibold text-sm">Full Curriculum</h4>
+                <p className="text-xs text-muted-foreground">LKG to Class 12</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Building2 className="h-8 w-8 mx-auto mb-2 text-purple-500" />
+                <h4 className="font-semibold text-sm">Engineering</h4>
+                <p className="text-xs text-muted-foreground">All branches & semesters</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Upload className="h-8 w-8 mx-auto mb-2 text-orange-500" />
+                <h4 className="font-semibold text-sm">Content Ingestion</h4>
+                <p className="text-xs text-muted-foreground">PDFs & textbooks</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Code2 className="h-8 w-8 mx-auto mb-2 text-cyan-500" />
+                <h4 className="font-semibold text-sm">Code Editor</h4>
+                <p className="text-xs text-muted-foreground">AI Website Builder</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Languages className="h-8 w-8 mx-auto mb-2 text-pink-500" />
+                <h4 className="font-semibold text-sm">Translation</h4>
+                <p className="text-xs text-muted-foreground">Multi-language support</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <BarChart3 className="h-8 w-8 mx-auto mb-2 text-indigo-500" />
+                <h4 className="font-semibold text-sm">Analytics</h4>
+                <p className="text-xs text-muted-foreground">Performance tracking</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Brain className="h-8 w-8 mx-auto mb-2 text-red-500" />
+                <h4 className="font-semibold text-sm">AI Personalization</h4>
+                <p className="text-xs text-muted-foreground">Smart recommendations</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Wifi className="h-8 w-8 mx-auto mb-2 text-teal-500" />
+                <h4 className="font-semibold text-sm">Offline Learning</h4>
+                <p className="text-xs text-muted-foreground">Unlimited downloads</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Video className="h-8 w-8 mx-auto mb-2 text-rose-500" />
+                <h4 className="font-semibold text-sm">Multimodal</h4>
+                <p className="text-xs text-muted-foreground">Audio & video scripts</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Trophy className="h-8 w-8 mx-auto mb-2 text-amber-500" />
+                <h4 className="font-semibold text-sm">Gamification</h4>
+                <p className="text-xs text-muted-foreground">XP, badges, streaks</p>
+              </Card>
+            </HoverCard>
+            <HoverCard>
+              <Card className="p-4 text-center bg-card/50 backdrop-blur-sm border-border/50">
+                <Calendar className="h-8 w-8 mx-auto mb-2 text-emerald-500" />
+                <h4 className="font-semibold text-sm">LMS Integration</h4>
+                <p className="text-xs text-muted-foreground">Moodle & Canvas</p>
+              </Card>
+            </HoverCard>
+            </StaggerChildren>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Education Plan Banner */}
-        <Card className="p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-2 border-blue-500/30 mb-8">
+        <ScrollReveal delay={300}>
+          <Card className="p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-2 border-blue-500/30 mb-8 backdrop-blur-sm">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
@@ -548,19 +594,22 @@ export default function PremiumPage() {
             <Button
               onClick={() => handleUpgrade("education")}
               disabled={loading && selectedPlan === "education"}
-              className="bg-blue-500 hover:bg-blue-600 text-white whitespace-nowrap"
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white whitespace-nowrap transition-all duration-300 hover:scale-105"
             >
               <GraduationCap className="mr-2 h-4 w-4" />
               Get Education Discount
             </Button>
           </div>
         </Card>
+        </ScrollReveal>
 
         {/* FAQ or Trust Section */}
-        <div className="text-center text-sm text-muted-foreground">
-          <p>Secure payments powered by Razorpay. Cancel anytime.</p>
-          <p className="mt-1">Questions? Contact us at vikas.ambalazari@gmail.com</p>
-        </div>
+        <ScrollReveal delay={400}>
+          <div className="text-center text-sm text-muted-foreground">
+            <p>Secure payments powered by Razorpay. Cancel anytime.</p>
+            <p className="mt-1">Questions? Contact us at vikas.ambalazari@gmail.com</p>
+          </div>
+        </ScrollReveal>
       </div>
     </div>
   );

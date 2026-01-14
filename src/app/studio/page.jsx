@@ -20,12 +20,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { 
   BookOpen, Plus, Save, Eye, Upload, FileText, 
-  Link as LinkIcon, Trash2, Crown
+  Link as LinkIcon, Trash2, Crown, Sparkles
 } from "lucide-react";
 import { toast } from "sonner";
 import WYSIWYGEditor from "@/components/studio/WYSIWYGEditor";
 import TemplateSelector from "@/components/studio/TemplateSelector";
 import ResourceManager from "@/components/studio/ResourceManager";
+import { PageBackground, GridPattern, PageHeader, ScrollReveal, HoverCard } from "@/components/ui/PageWrapper";
 
 export default function StudioPage() {
   const { user } = useAuth();
@@ -205,34 +206,42 @@ export default function StudioPage() {
   }, [user, activeTab]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="pt-20 p-6">
+    <div className="min-h-screen bg-background relative">
+      <PageBackground />
+      <GridPattern opacity={0.02} />
+      
+      <div className="pt-20 p-6 relative z-10">
         <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Instructor Authoring Studio</h1>
-          <p className="text-muted-foreground">Create and edit courses with AI assistance</p>
-        </div>
+        <PageHeader 
+          title="Instructor Authoring Studio" 
+          description="Create and edit courses with AI assistance"
+          icon={BookOpen}
+          iconColor="text-blue-500"
+          badge={<><Sparkles className="h-3.5 w-3.5" /> Course Creator</>}
+        />
 
         {!premiumStatus.isPremium && (
-          <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-lg">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
-                <Crown className="h-5 w-5 text-black" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-1">Studio Preview Mode</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Free users can create 1 Studio course for testing. Upgrade to Premium for unlimited course creation and full design capabilities!
-                </p>
-                <Button
-                  onClick={() => router.push("/premium")}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black"
-                >
-                  Upgrade to Premium - ₹100/month
-                </Button>
+          <ScrollReveal delay={100}>
+            <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl backdrop-blur-sm">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg shadow-yellow-500/25">
+                  <Crown className="h-5 w-5 text-black" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-1">Studio Preview Mode</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Free users can create 1 Studio course for testing. Upgrade to Premium for unlimited course creation and full design capabilities!
+                  </p>
+                  <Button
+                    onClick={() => router.push("/premium")}
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black transition-all duration-300 hover:scale-105"
+                  >
+                    Upgrade to Premium - ₹100/month
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

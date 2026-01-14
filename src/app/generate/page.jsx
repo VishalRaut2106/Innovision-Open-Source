@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Calendar, Clock, Flag, GraduationCap, Loader2, BookOpen, Sparkles, Check, ChevronsUpDown } from "lucide-react";
+import { Calendar, Clock, Flag, GraduationCap, Loader2, BookOpen, Sparkles, Check, ChevronsUpDown, Crown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
@@ -12,6 +12,7 @@ import { BRANCH_SUBJECTS_PART3 } from "@/lib/engineering-subjects-part3";
 import { BRANCH_SUBJECTS_PART4 } from "@/lib/engineering-subjects-part4";
 import { BRANCH_SUBJECTS_PART5 } from "@/lib/engineering-subjects-part5";
 import { getAvailableStreams, getSubjectsByClassAndBoard } from "@/lib/curriculum-data";
+import { PageBackground, GridPattern, ScrollReveal } from "@/components/ui/PageWrapper";
 
 // Merge all branch subjects
 const ALL_BRANCH_SUBJECTS = {
@@ -48,11 +49,11 @@ const SelectionCard = ({ options, selectedValue, onSelect, title }) => {
             key={option.value}
             onClick={() => onSelect(option.value)}
             className={`
-              p-4 border rounded-lg w-36 cursor-pointer transition-all 
+              p-4 border rounded-xl w-36 cursor-pointer transition-all duration-300
               ${
                 selectedValue === option.value
-                  ? "border-blue-400 bg-blue-500/10 ring-1 ring-blue-400"
-                  : "border-border hover:bg-accent/60"
+                  ? "border-blue-400 bg-blue-500/10 ring-1 ring-blue-400 scale-[1.02]"
+                  : "border-border/50 hover:bg-accent/60 hover:border-blue-400/50"
               }
             `}
           >
@@ -505,58 +506,70 @@ Return valid JSON only.`;
   }, [isSubmitting]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <PageBackground />
+      <GridPattern opacity={0.02} />
+      
       {isSubmitting && (
-        <div className="w-full h-screen flex flex-col gap-2 items-center justify-center absolute z-5 opacity-95 bg-background backdrop-blur-3xl">
-          <Loader2 className="animate-spin -translate-y-16"></Loader2>
-          <p className="-translate-y-16"> Please wait while we generate your roadmap</p>
+        <div className="w-full h-screen flex flex-col gap-2 items-center justify-center fixed inset-0 z-50 bg-background/95 backdrop-blur-xl">
+          <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mb-4">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-500"></Loader2>
+          </div>
+          <p className="text-lg font-medium">Please wait while we generate your roadmap</p>
+          <p className="text-sm text-muted-foreground">This may take a moment...</p>
         </div>
       )}
-      <div className="mx-auto max-w-3xl pt-4">
-        <div className="mb-8 text-center flex flex-col items-center justify-center">
-          <div className="absolute w-44 h-44 bg-blue-300 rounded-full blur-[100px]"></div>
-          <h1 className="text-4xl font-bold tracking-tight">Course Generator</h1>
-          <p className="mt-2 text-muted-foreground">Create your personalized learning journey</p>
-        </div>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-8">
-            <TabsTrigger value="custom" className="flex items-center gap-2">
+      <div className="mx-auto max-w-3xl pt-4 relative z-10">
+        <ScrollReveal>
+          <div className="mb-8 text-center flex flex-col items-center justify-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium mb-4">
               <Sparkles className="h-4 w-4" />
-              Custom Topic
-            </TabsTrigger>
-            <TabsTrigger value="curriculum" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              Curriculum
-              {!premiumStatus.isPremium && (
-                <span className="ml-1 text-xs bg-yellow-500 text-black px-1.5 py-0.5 rounded">PRO</span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="engineering" className="flex items-center gap-2">
-              <GraduationCap className="h-4 w-4" />
-              Engineering
-              {!premiumStatus.isPremium && (
-                <span className="ml-1 text-xs bg-yellow-500 text-black px-1.5 py-0.5 rounded">PRO</span>
-              )}
-            </TabsTrigger>
-          </TabsList>
+              <span>AI-Powered Generation</span>
+            </div>
+            <h1 className="text-4xl font-bold tracking-tight">Course Generator</h1>
+            <p className="mt-2 text-muted-foreground">Create your personalized learning journey</p>
+          </div>
+        </ScrollReveal>
 
-          <TabsContent value="custom">
-            <Card className="p-6 border-0 shadow-none">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
-                  <FormField
-                    control={form.control}
-                    name="concept"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">Concept to Learn</FormLabel>
-                        <FormDescription>What main topic would you like to learn?</FormDescription>
-                        <FormControl>
-                          <Input
-                            className={"focus-visible:ring-blue-200 focus-visible:border-blue-400"}
-                            placeholder="e.g., Trigonometry, Web development"
-                            {...field}
+        <ScrollReveal delay={100}>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 mb-8 bg-muted/50 backdrop-blur-sm">
+              <TabsTrigger value="custom" className="flex items-center gap-2 data-[state=active]:bg-background">
+                <Sparkles className="h-4 w-4" />
+                Custom Topic
+              </TabsTrigger>
+              <TabsTrigger value="curriculum" className="flex items-center gap-2 data-[state=active]:bg-background">
+                <BookOpen className="h-4 w-4" />
+                Curriculum
+                {!premiumStatus.isPremium && (
+                  <span className="ml-1 text-xs bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-1.5 py-0.5 rounded-full font-semibold">PRO</span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="engineering" className="flex items-center gap-2 data-[state=active]:bg-background">
+                <GraduationCap className="h-4 w-4" />
+                Engineering
+                {!premiumStatus.isPremium && (
+                  <span className="ml-1 text-xs bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-1.5 py-0.5 rounded-full font-semibold">PRO</span>
+                )}
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="custom">
+              <Card className="p-6 border-0 shadow-none bg-card/50 backdrop-blur-sm">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
+                    <FormField
+                      control={form.control}
+                      name="concept"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2">Concept to Learn</FormLabel>
+                          <FormDescription>What main topic would you like to learn?</FormDescription>
+                          <FormControl>
+                            <Input
+                              className={"focus-visible:ring-blue-200 focus-visible:border-blue-400 bg-background/50"}
+                              placeholder="e.g., Trigonometry, Web development"
+                              {...field}
                           />
                         </FormControl>
                       </FormItem>
@@ -1046,13 +1059,14 @@ Return valid JSON only.`;
                   />
                 </div>
 
-                <Button onClick={handleEngineeringSubmit} className="w-full" disabled={isSubmitting}>
+                <Button onClick={handleEngineeringSubmit} className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300" disabled={isSubmitting}>
                   {isSubmitting ? "Generating Course..." : "Generate Engineering Course"}
                 </Button>
               </div>
             </Card>
           </TabsContent>
         </Tabs>
+        </ScrollReveal>
       </div>
     </div>
   );

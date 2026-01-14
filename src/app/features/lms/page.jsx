@@ -10,6 +10,7 @@ import LMSConfig from "@/components/settings/LMSConfig";
 import { getLMSConfig } from "@/lib/lms-integration";
 import { toast } from "sonner";
 import PremiumDialog from "@/components/PremiumDialog";
+import { PageBackground, GridPattern, PageHeader, ScrollReveal, HoverCard } from "@/components/ui/PageWrapper";
 
 export default function LMSPage() {
   const { user, loading } = useAuth();
@@ -119,21 +120,29 @@ export default function LMSPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <div className="mb-6">
-          <Link href="/features">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Features
-            </Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background relative">
+      <PageBackground variant="default" />
+      <GridPattern opacity={0.02} />
+      
+      <div className="max-w-6xl mx-auto p-6 space-y-6 relative z-10">
+        <ScrollReveal>
+          <div className="mb-6">
+            <Link href="/features">
+              <Button variant="ghost" size="sm" className="hover:bg-muted/50">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Features
+              </Button>
+            </Link>
+          </div>
+        </ScrollReveal>
 
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold">LMS Integration</h1>
-          <p className="text-muted-foreground">Connect with Moodle or Canvas to sync courses and grades</p>
-        </div>
+        <PageHeader
+          icon={RefreshCw}
+          iconColor="text-blue-500"
+          title="LMS Integration"
+          description="Connect with Moodle or Canvas to sync courses and grades"
+          badge="🔗 Premium Feature"
+        />
 
         <PremiumDialog
           open={showPremiumDialog}
@@ -142,25 +151,33 @@ export default function LMSPage() {
         />
 
         {!premiumStatus.isPremium ? (
-          <div className="text-center p-12 border-2 border-dashed rounded-lg">
-            <RefreshCw className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-            <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
-            <p className="text-muted-foreground mb-4">
-              LMS Integration is only available for Premium users.
-            </p>
-            <Button onClick={() => router.push("/premium")} className="bg-yellow-500 hover:bg-yellow-600 text-black">
-              <Crown className="w-4 h-4 mr-2" />
-              Upgrade to Premium
-            </Button>
-          </div>
+          <ScrollReveal delay={100}>
+            <div className="text-center p-12 border-2 border-dashed rounded-xl bg-card/50 backdrop-blur-sm">
+              <RefreshCw className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
+              <p className="text-muted-foreground mb-6">
+                LMS Integration is only available for Premium users.
+              </p>
+              <Button 
+                onClick={() => router.push("/premium")} 
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                Upgrade to Premium
+              </Button>
+            </div>
+          </ScrollReveal>
         ) : (
           <>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-6">
+                <ScrollReveal delay={100}>
                 <LMSConfig />
+                </ScrollReveal>
 
                 {config?.enabled && (
-                  <Card className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
+                  <ScrollReveal delay={150}>
+                  <Card className="bg-green-50/80 dark:bg-green-950/80 border-green-200 dark:border-green-800 backdrop-blur-sm">
                     <CardContent className="pt-6">
                       <div className="flex items-center gap-3">
                         <CheckCircle className="w-6 h-6 text-green-600" />
@@ -173,10 +190,13 @@ export default function LMSPage() {
                       </div>
                     </CardContent>
                   </Card>
+                  </ScrollReveal>
                 )}
               </div>
 
-              <Card>
+              <ScrollReveal delay={200}>
+              <HoverCard>
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50">
                 <CardHeader>
                   <CardTitle>Sync Courses</CardTitle>
                   <CardDescription>Sync your InnoVision courses to your LMS</CardDescription>
@@ -223,9 +243,12 @@ export default function LMSPage() {
                   )}
                 </CardContent>
               </Card>
+              </HoverCard>
+              </ScrollReveal>
             </div>
 
-            <Card className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+            <ScrollReveal delay={250}>
+            <Card className="bg-blue-50/80 dark:bg-blue-950/80 border-blue-200 dark:border-blue-800 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-blue-900 dark:text-blue-100">Integration Features</CardTitle>
               </CardHeader>
@@ -252,6 +275,7 @@ export default function LMSPage() {
                 </div>
               </CardContent>
             </Card>
+            </ScrollReveal>
           </>
         )}
       </div>

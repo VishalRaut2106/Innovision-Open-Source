@@ -195,7 +195,7 @@ export const XpProvider = ({ children }) => {
 
       if (data && typeof data.xp === "number") {
         const xpDiff = data.xp - xp;
-        const newLevel = data.level || Math.floor(data.xp / 1000) + 1;
+        const newLevel = data.level || Math.floor(data.xp / 500) + 1;
         
         if (xpDiff > 0 && xp > 0) {
           setChanged(xpDiff);

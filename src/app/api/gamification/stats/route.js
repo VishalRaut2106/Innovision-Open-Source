@@ -96,7 +96,7 @@ export async function POST(request) {
 
     const xpGained = xpRewards[action] || value || 0;
     const newXP = stats.xp + xpGained;
-    const newLevel = Math.floor(newXP / 1000) + 1;
+    const newLevel = Math.floor(newXP / 500) + 1;
 
     // Update streak for actual learning activities only
     let currentStreak = stats.streak || 0;

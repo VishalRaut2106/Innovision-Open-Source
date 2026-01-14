@@ -31,7 +31,7 @@ async function completeChapter(chapter, roadmapId, user) {
             };
 
         const newXP = (stats.xp || 0) + xpGained;
-        const newLevel = Math.floor(newXP / 1000) + 1;
+        const newLevel = Math.floor(newXP / 500) + 1;
         
         // Check for badges
         const currentBadges = stats.badges || [];
@@ -170,7 +170,7 @@ export async function POST(req) {
                 };
 
             const newXP = (stats.xp || 0) + xpGained;
-            const newLevel = Math.floor(newXP / 1000) + 1;
+            const newLevel = Math.floor(newXP / 500) + 1;
             
             // Check for new badges
             const currentBadges = stats.badges || [];

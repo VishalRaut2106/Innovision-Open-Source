@@ -26,6 +26,7 @@ import TrialBanner from "@/components/TrialBanner";
 import PremiumDialog from "@/components/PremiumDialog";
 import LockedFeature from "@/components/LockedFeature";
 import { useRouter } from "next/navigation";
+import { PageBackground, GridPattern, ScrollReveal } from "@/components/ui/PageWrapper";
 
 export default function ProfilePage() {
   const { user } = useAuth();
@@ -122,8 +123,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-6">
+    <div className="min-h-screen bg-background relative">
+      <PageBackground variant="profile" />
+      <GridPattern opacity={0.02} />
+      
+      <div className="max-w-7xl mx-auto p-6 relative z-10">
         {/* Trial Banner */}
         <TrialBanner onStatusChange={handleStatusChange} />
         

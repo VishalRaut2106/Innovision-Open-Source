@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Code, Play, Download, Sparkles, Globe, Crown } from "lucide-react";
 import { toast } from "sonner";
+import { PageBackground, GridPattern, PageHeader, ScrollReveal, HoverCard } from "@/components/ui/PageWrapper";
 
 export default function CodeEditor() {
   const [language, setLanguage] = useState("javascript");
@@ -93,154 +94,185 @@ export default function CodeEditor() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Code Editor & AI Website Builder</h1>
-          <p className="text-muted-foreground">
-            Write, run, and test code in multiple languages or generate websites with AI
-          </p>
-        </div>
+    <div className="min-h-screen bg-background p-6 relative">
+      <PageBackground />
+      <GridPattern opacity={0.02} />
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        <PageHeader 
+          title="Code Editor & AI Website Builder" 
+          description="Write, run, and test code in multiple languages or generate websites with AI"
+          icon={Code}
+          iconColor="text-cyan-500"
+          badge={<><Sparkles className="h-3.5 w-3.5" /> Developer Tools</>}
+        />
 
         {!premiumStatus.isPremium && (
-          <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-lg">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
-                <Crown className="h-5 w-5 text-black" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-1">Preview Only</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Code Editor and AI Website Builder are Premium features. Upgrade to run code and generate websites!
-                </p>
-                <Button
-                  onClick={() => router.push("/premium")}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black"
-                >
-                  Upgrade to Premium - ₹100/month
-                </Button>
+          <ScrollReveal delay={100}>
+            <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-xl backdrop-blur-sm">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg shadow-yellow-500/25">
+                  <Crown className="h-5 w-5 text-black" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-1">Preview Only</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Code Editor and AI Website Builder are Premium features. Upgrade to run code and generate websites!
+                  </p>
+                  <Button
+                    onClick={() => router.push("/premium")}
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black transition-all duration-300 hover:scale-105"
+                  >
+                    Upgrade to Premium - ₹100/month
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         )}
 
-        <Tabs defaultValue="editor" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="editor">
-              <Code className="h-4 w-4 mr-2" />
-              Code Editor
-            </TabsTrigger>
-            <TabsTrigger value="website">
-              <Globe className="h-4 w-4 mr-2" />
-              AI Website Builder
-            </TabsTrigger>
-          </TabsList>
+        <ScrollReveal delay={150}>
+          <Tabs defaultValue="editor" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 bg-muted/50 backdrop-blur-sm">
+              <TabsTrigger value="editor" className="data-[state=active]:bg-background">
+                <Code className="h-4 w-4 mr-2" />
+                Code Editor
+              </TabsTrigger>
+              <TabsTrigger value="website" className="data-[state=active]:bg-background">
+                <Globe className="h-4 w-4 mr-2" />
+                AI Website Builder
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="editor">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Editor */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>Code Editor</CardTitle>
-                    <Select value={language} onValueChange={setLanguage}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="javascript">JavaScript</SelectItem>
-                        <SelectItem value="python">Python</SelectItem>
-                        <SelectItem value="java">Java</SelectItem>
-                        <SelectItem value="cpp">C++</SelectItem>
-                        <SelectItem value="c">C</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Textarea
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    placeholder={`Write your ${language} code here...`}
-                    className="font-mono min-h-[400px]"
-                  />
-                  <Button onClick={runCode} className="w-full">
-                    <Play className="h-4 w-4 mr-2" />
-                    Run Code
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Output */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Output</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <pre className="bg-muted p-4 rounded-lg min-h-[400px] overflow-auto font-mono text-sm">
-                    {output || "Output will appear here..."}
-                  </pre>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="website">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Prompt */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Describe Your Website</CardTitle>
-                  <CardDescription>Tell AI what kind of website you want to create</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Textarea
-                    value={websitePrompt}
-                    onChange={(e) => setWebsitePrompt(e.target.value)}
-                    placeholder="Example: Create a portfolio website with a hero section, about me, projects gallery, and contact form. Use modern design with blue and white colors."
-                    className="min-h-[300px]"
-                  />
-                  <Button onClick={generateWebsite} disabled={isGenerating} className="w-full">
-                    <Sparkles className="h-4 w-4 mr-2" />
-                    {isGenerating ? "Generating..." : "Generate Website"}
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Preview */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>Generated Code</CardTitle>
-                    {generatedWebsite && (
-                      <Button size="sm" onClick={downloadWebsite}>
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </Button>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {generatedWebsite ? (
-                    <div className="space-y-4">
-                      <Textarea value={generatedWebsite} readOnly className="font-mono min-h-[300px]" />
-                      <div className="border rounded-lg p-4 bg-white">
-                        <p className="text-sm text-muted-foreground mb-2">Preview:</p>
-                        <iframe
-                          srcDoc={generatedWebsite}
-                          className="w-full h-[300px] border rounded"
-                          title="Website Preview"
-                        />
+            <TabsContent value="editor">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Editor */}
+                <HoverCard>
+                  <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                            <Code className="h-4 w-4 text-cyan-500" />
+                          </div>
+                          Code Editor
+                        </CardTitle>
+                        <Select value={language} onValueChange={setLanguage}>
+                          <SelectTrigger className="w-[180px] bg-background/50">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="javascript">JavaScript</SelectItem>
+                            <SelectItem value="python">Python</SelectItem>
+                            <SelectItem value="java">Java</SelectItem>
+                            <SelectItem value="cpp">C++</SelectItem>
+                            <SelectItem value="c">C</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
-                    </div>
-                  ) : (
-                    <p className="text-muted-foreground text-center py-20">Generated website will appear here...</p>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <Textarea
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        placeholder={`Write your ${language} code here...`}
+                        className="font-mono min-h-[400px] bg-background/50"
+                      />
+                      <Button onClick={runCode} className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 transition-all duration-300">
+                        <Play className="h-4 w-4 mr-2" />
+                        Run Code
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </HoverCard>
+
+                {/* Output */}
+                <HoverCard>
+                  <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                    <CardHeader>
+                      <CardTitle>Output</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <pre className="bg-muted/50 p-4 rounded-xl min-h-[400px] overflow-auto font-mono text-sm border border-border/50">
+                        {output || "Output will appear here..."}
+                      </pre>
+                    </CardContent>
+                  </Card>
+                </HoverCard>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="website">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Prompt */}
+                <HoverCard>
+                  <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                          <Sparkles className="h-4 w-4 text-purple-500" />
+                        </div>
+                        Describe Your Website
+                      </CardTitle>
+                      <CardDescription>Tell AI what kind of website you want to create</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <Textarea
+                        value={websitePrompt}
+                        onChange={(e) => setWebsitePrompt(e.target.value)}
+                        placeholder="Example: Create a portfolio website with a hero section, about me, projects gallery, and contact form. Use modern design with blue and white colors."
+                        className="min-h-[300px] bg-background/50"
+                      />
+                      <Button onClick={generateWebsite} disabled={isGenerating} className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-300">
+                        <Sparkles className="h-4 w-4 mr-2" />
+                        {isGenerating ? "Generating..." : "Generate Website"}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </HoverCard>
+
+                {/* Preview */}
+                <HoverCard>
+                  <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle>Generated Code</CardTitle>
+                        {generatedWebsite && (
+                          <Button size="sm" onClick={downloadWebsite} className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+                            <Download className="h-4 w-4 mr-2" />
+                            Download
+                          </Button>
+                        )}
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      {generatedWebsite ? (
+                        <div className="space-y-4">
+                          <Textarea value={generatedWebsite} readOnly className="font-mono min-h-[300px] bg-background/50" />
+                          <div className="border border-border/50 rounded-xl p-4 bg-white">
+                            <p className="text-sm text-muted-foreground mb-2">Preview:</p>
+                            <iframe
+                              srcDoc={generatedWebsite}
+                              className="w-full h-[300px] border rounded-lg"
+                              title="Website Preview"
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center h-[400px] text-muted-foreground">
+                          <div className="text-center">
+                            <Globe className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                            <p>Generated website will appear here...</p>
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </HoverCard>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </ScrollReveal>
       </div>
     </div>
   );

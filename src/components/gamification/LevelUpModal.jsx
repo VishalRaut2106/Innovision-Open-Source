@@ -178,12 +178,12 @@ export default function LevelUpModal({
             {/* Next level progress hint */}
             <div className="mb-6">
               <p className="text-xs text-gray-500">
-                {1000 - (totalXP % 1000)} XP to Level {newLevel + 1}
+                {500 - (totalXP % 500)} XP to Level {newLevel + 1}
               </p>
               <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                 <div 
                   className="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full transition-all duration-1000"
-                  style={{ width: `${(totalXP % 1000) / 10}%` }}
+                  style={{ width: `${(totalXP % 500) / 5}%` }}
                 />
               </div>
             </div>

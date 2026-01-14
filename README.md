@@ -41,56 +41,87 @@ InnoVision is a cutting-edge AI-powered learning platform that dynamically gener
 
 ## ✨ Features
 
-### 🎯 Course Generation
+### 🎯 AI-Powered Course Generation
 | Feature | Description |
 |---------|-------------|
 | **Custom Course Generation** | Generate structured courses on ANY topic using Google Gemini AI |
 | **YouTube Course Generation** | Create courses from YouTube video content automatically |
-| **Studio Courses** | Design and create custom courses with our studio tools |
+| **Instructor Studio** | WYSIWYG editor for creating custom courses with AI assistance |
 | **Content Ingestion** | Import PDFs, textbooks, and documents to generate courses |
-| **Curriculum Browser** | Access pre-built curriculum from LKG to Class 12 (CBSE & State Boards) |
+| **Curriculum Browser** | Pre-built curriculum from LKG to Class 12 (CBSE & State Boards) |
 | **Engineering Courses** | Specialized courses for all engineering branches and semesters |
 
-### 📖 Learning Experience
+### 📖 Enhanced Learning Experience
 | Feature | Description |
 |---------|-------------|
 | **Interactive Tasks** | Quiz (MCQ), Fill-in-the-blanks, Match the Following for each chapter |
 | **AI-Powered Roadmaps** | Step-by-step learning paths organized into 8-12 chapters |
 | **Chapter Tests** | Assess understanding with chapter-wise tests |
-| **Progress Tracking** | Track completion percentage, XP points, and learning streaks |
+| **Reading Time Estimator** | Shows estimated reading time for each chapter (200 wpm) |
+| **Code Snippet Copy** | One-click copy for all code blocks with success animation |
+| **Bookmark System** | Save favorite chapters for quick access |
 | **Offline Learning** | Download courses for offline access using IndexedDB |
-| **Multi-language Translation** | Learn in your preferred language with real-time translation |
+| **Multi-language Translation** | Learn in 100+ languages with real-time translation |
 
-### 🎮 Gamification System
+### 🎮 Advanced Gamification System
 | Feature | Description |
 |---------|-------------|
-| **XP Points** | Earn 2 XP for each correct answer, track total XP |
-| **Learning Streaks** | Maintain daily learning streaks for consistent study |
-| **Badges & Achievements** | Unlock badges for milestones and achievements |
-| **Leaderboard** | Compete with other learners, see your ranking |
-| **Daily Challenges** | Complete daily tasks for bonus XP rewards |
-| **Skill Tree** | Visual progression of skills mastered |
+| **XP Points System** | Earn XP for completing lessons, quizzes, courses, and more |
+| **Learning Streaks** | Maintain daily learning streaks with fire animations |
+| **Badges & Achievements** | Unlock 8+ badges for milestones (First Steps, Dedicated, Perfectionist, etc.) |
+| **Leaderboard** | Compete with learners - Daily, Weekly, and All-Time rankings |
+| **Daily Quests** | Complete daily tasks for bonus XP rewards |
+| **XP Combo Multiplier** | Chain correct answers for bonus XP multipliers |
+| **Level Up Celebrations** | Confetti animations and modals on level up |
+| **Achievement Toasts** | Real-time notifications for unlocked achievements |
+| **Badge Gallery** | View all earned and locked badges with progress |
 
-### 🚀 Advanced Features
+### 🚀 Premium Features
 | Feature | Description |
 |---------|-------------|
 | **Analytics Dashboard** | Track performance metrics, XP graphs, learning insights |
+| **Learning Stats** | Hours studied, courses completed, GitHub-style activity heatmap |
 | **AI Personalization** | Smart recommendations based on learning style |
 | **Code Editor** | Built-in code editor with AI assistance |
-| **AI Website Builder** | Create websites with AI guidance |
 | **LMS Integration** | Connect with Moodle and Canvas |
 | **Multimodal Content** | Generate audio scripts and video storyboards |
+| **Research Platform** | Export anonymized datasets for research |
 | **7-Day Free Trial** | Full access to premium features for 7 days |
+
+### 🌙 User Experience
+| Feature | Description |
+|---------|-------------|
+| **Dark/Light Mode** | Theme switching for comfortable viewing |
+| **Night Mode** | Blue light filter for late-night studying |
+| **Study Reminders** | Browser push notifications for study reminders |
+| **Motivational Quotes** | Rotating inspirational quotes on dashboard |
+| **Progress Tracking** | Visual progress bars with animations |
+| **Responsive Design** | Works on desktop, tablet, and mobile |
+| **PWA Support** | Install as a Progressive Web App |
 
 ### 🔐 Platform Features
 | Feature | Description |
 |---------|-------------|
 | **Google Authentication** | Secure login with Google OAuth 2.0 |
 | **PRO Badge** | Premium users get PRO badge next to profile |
-| **Dark/Light Mode** | Theme switching for comfortable viewing |
-| **Responsive Design** | Works on desktop, tablet, and mobile |
-| **PWA Support** | Install as a Progressive Web App |
+| **Premium Celebration** | Confetti, sound effects, and animations on premium purchase |
 | **Real-time Sync** | Data syncs across devices via Firebase |
+| **Accessibility** | WCAG compliant with font size, contrast, and color blind modes |
+
+---
+
+## 🎮 XP Rewards System
+
+| Action | XP Earned |
+|--------|-----------|
+| Correct Answer | 2 XP |
+| Perfect Quiz (100%) | 2 XP |
+| Complete Lesson | 5 XP |
+| Complete Chapter | 5 XP |
+| View Course | 10 XP |
+| Generate Course | 10 XP |
+| Help Another Student | 15 XP |
+| Complete Course | 50 XP |
 
 ---
 
@@ -106,6 +137,8 @@ InnoVision is a cutting-edge AI-powered learning platform that dynamically gener
 | Framer Motion | Latest | Animation library |
 | Recharts | Latest | Charts and data visualization |
 | Lucide React | Latest | Icon library |
+| canvas-confetti | Latest | Celebration animations |
+| react-calendar-heatmap | Latest | GitHub-style activity heatmap |
 
 ### Backend & Database
 | Technology | Purpose |
@@ -123,6 +156,7 @@ InnoVision is a cutting-edge AI-powered learning platform that dynamically gener
 | Razorpay | Payment gateway for subscriptions |
 | EmailJS | Contact form email service |
 | IndexedDB (idb) | Offline data storage |
+| Web Push API | Study reminder notifications |
 
 ---
 
@@ -133,7 +167,7 @@ InnoVision is a cutting-edge AI-powered learning platform that dynamically gener
 - 1 YouTube course
 - 1 Studio course
 - 1 offline download
-- Basic gamification
+- Basic gamification (XP, streaks, badges)
 - 7-day free trial of premium features
 
 ### Premium Plan - ₹100/month
@@ -146,9 +180,11 @@ InnoVision is a cutting-edge AI-powered learning platform that dynamically gener
 - ✅ Code Editor & AI Builder
 - ✅ Multi-language translation
 - ✅ Analytics Dashboard
+- ✅ Learning Stats & Activity Heatmap
 - ✅ AI Personalization
 - ✅ Unlimited offline downloads
 - ✅ LMS Integration
+- ✅ Study Reminders
 - ✅ Priority support
 - ✅ PRO badge
 
@@ -242,9 +278,8 @@ InnoVision/
 │   │   ├── api/               # API routes
 │   │   │   ├── gamification/  # XP, streaks, badges APIs
 │   │   │   ├── premium/       # Subscription & Razorpay APIs
+│   │   │   ├── bookmarks/     # Bookmark management API
 │   │   │   ├── roadmap/       # Course management APIs
-│   │   │   ├── getuser/       # User data API
-│   │   │   ├── getrank/       # Leaderboard API
 │   │   │   └── ...
 │   │   ├── analytics/         # Analytics dashboard
 │   │   ├── chapter-test/      # Chapter tests
@@ -253,36 +288,31 @@ InnoVision/
 │   │   ├── courses/           # Course listing
 │   │   ├── curriculum/        # Curriculum browser (LKG-12)
 │   │   ├── features/          # Advanced features
-│   │   │   ├── analytics/     # Analytics feature
-│   │   │   ├── lms/           # LMS integration
-│   │   │   ├── multimodal/    # Audio/video generation
-│   │   │   ├── offline/       # Offline learning
-│   │   │   ├── personalization/ # AI personalization
-│   │   │   └── projects/      # Project-based learning
 │   │   ├── gamification/      # Gamification dashboard
 │   │   ├── generate/          # Course generation
 │   │   ├── premium/           # Premium subscription page
 │   │   ├── profile/           # User profile & dashboard
+│   │   ├── research/          # Research platform
 │   │   ├── roadmap/           # Learning roadmaps
 │   │   ├── studio/            # Course studio
-│   │   ├── studio-course/     # Studio course viewer
 │   │   └── youtube-course/    # YouTube course generator
 │   ├── components/            # Reusable components
-│   │   ├── chapter_content/   # Chapter display components
-│   │   ├── dashboard/         # Dashboard & Sidebar
-│   │   ├── gamification/      # XP, Streaks, Leaderboard
-│   │   ├── Landing/           # Landing page components
-│   │   ├── Navbar/            # Navigation & Logout
-│   │   ├── profile/           # Profile components
+│   │   ├── chapter_content/   # Chapter display, BookmarkButton
+│   │   ├── dashboard/         # Sidebar, MotivationalQuote
+│   │   ├── gamification/      # XP, Streaks, Leaderboard, Badges
+│   │   ├── Landing/           # Hero, Features, HowItWorks, FAQ, CTA
+│   │   ├── Navbar/            # Navigation, Night Mode toggle
+│   │   ├── premium/           # PremiumCelebration
+│   │   ├── profile/           # StatsCard, Bookmarks
+│   │   ├── settings/          # StudyReminders
 │   │   ├── Tasks/             # Quiz, Fill-ups, Match
 │   │   └── ui/                # Shadcn UI components
-│   ├── contexts/              # React contexts (Auth, XP)
+│   ├── contexts/              # React contexts (Auth, XP, NightMode)
 │   ├── hooks/                 # Custom React hooks
-│   └── lib/                   # Utilities (Firebase, Auth, Premium)
+│   └── lib/                   # Utilities (Firebase, Auth, notifications)
 ├── .env.local                 # Environment variables
 ├── next.config.mjs            # Next.js configuration
-├── package.json               # Dependencies
-└── tailwind.config.js         # Tailwind configuration
+└── package.json               # Dependencies
 ```
 
 ---
@@ -301,8 +331,7 @@ InnoVision/
 ### Gamification
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/gamification/stats` | GET | Get user gamification stats |
-| `/api/gamification/xp` | POST | Award XP points |
+| `/api/gamification/stats` | GET/POST | Get/Update user stats & award XP |
 | `/api/gamification/streak` | GET/POST | Get/Update streak |
 | `/api/gamification/badges` | GET | Get user badges |
 | `/api/gamification/leaderboard` | GET | Get leaderboard |
@@ -314,52 +343,12 @@ InnoVision/
 | `/api/premium/create-order` | POST | Create Razorpay order |
 | `/api/premium/verify-payment` | POST | Verify payment |
 
-### User
+### User Features
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/getuser` | GET | Get user profile data |
 | `/api/getrank` | GET | Get user rank & leaderboard |
-| `/api/auth/session` | POST/DELETE | Manage auth session |
-
----
-
-## 🔨 Scripts
-
-```bash
-# Development
-npm run dev          # Start dev server with Turbopack
-
-# Production
-npm run build        # Build for production
-npm run start        # Start production server
-
-# Code Quality
-npm run lint         # Run ESLint
-```
-
----
-
-## 🌐 Deployment
-
-### Vercel (Recommended)
-1. Push code to GitHub
-2. Connect repository to [Vercel](https://vercel.com)
-3. Add environment variables in Vercel dashboard
-4. Deploy automatically on every push
-
-### Environment Variables for Production
-Make sure to add all environment variables in your deployment platform:
-- Firebase configuration
-- Razorpay keys (both test and live)
-- Gemini API key
-- EmailJS credentials
-- NextAuth secret
-
-### Other Platforms
-- Netlify
-- Railway
-- DigitalOcean App Platform
-- AWS Amplify
+| `/api/bookmarks` | GET/POST/DELETE | Manage bookmarks |
 
 ---
 
@@ -386,7 +375,9 @@ InnoVision contributes to the following UN SDGs:
 | Real-time Generation | ✅ Instant | ❌ N/A | ❌ N/A | ❌ N/A |
 | Gamification | ✅ Full | ⚠️ Limited | ❌ No | ⚠️ Limited |
 | Offline Mode | ✅ Yes | ⚠️ Paid | ⚠️ Paid | ❌ No |
-| Multi-language | ✅ Yes | ⚠️ Limited | ⚠️ Limited | ✅ Yes |
+| Multi-language | ✅ 100+ | ⚠️ Limited | ⚠️ Limited | ✅ Yes |
+| Night Mode | ✅ Yes | ❌ No | ❌ No | ❌ No |
+| Study Reminders | ✅ Yes | ⚠️ Email | ⚠️ Email | ❌ No |
 | Free Tier | ✅ Generous | ⚠️ Limited | ❌ No | ✅ Yes |
 | Education Discount | ✅ 50% Off | ⚠️ Varies | ❌ No | ✅ Free |
 | Price | ₹100/month | $39-59/month | $20-200/course | Free |
@@ -414,18 +405,6 @@ InnoVision contributes to the following UN SDGs:
 ## 📄 License
 
 This project is licensed under the ISC License.
-
----
-
-## 🙏 Acknowledgments
-
-- Google Gemini API for AI capabilities
-- Shadcn/UI for beautiful components
-- Next.js team for the amazing framework
-- Firebase for backend services
-- Razorpay for payment processing
-- Framer Motion for animations
-- Recharts for data visualization
 
 ---
 

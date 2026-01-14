@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import AnalyticsDashboard from "@/components/dashboard/AnalyticsDashboard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, BarChart3, Crown } from "lucide-react";
 import PremiumDialog from "@/components/PremiumDialog";
+import { PageBackground, GridPattern, PageHeader, ScrollReveal } from "@/components/ui/PageWrapper";
 
 export default function AnalyticsPage() {
   const { user, loading } = useAuth();
@@ -52,16 +53,29 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-6">
-        <div className="mb-6">
-          <Link href="/features">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Features
-            </Button>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background relative">
+      <PageBackground variant="default" />
+      <GridPattern opacity={0.02} />
+      
+      <div className="max-w-7xl mx-auto p-6 relative z-10">
+        <ScrollReveal>
+          <div className="mb-6">
+            <Link href="/features">
+              <Button variant="ghost" size="sm" className="hover:bg-muted/50">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Features
+              </Button>
+            </Link>
+          </div>
+        </ScrollReveal>
+
+        <PageHeader
+          icon={BarChart3}
+          iconColor="text-blue-500"
+          title="Analytics Dashboard"
+          description="Track your learning progress and performance insights"
+          badge="📊 Premium Feature"
+        />
 
         <PremiumDialog
           open={showPremiumDialog}
@@ -70,21 +84,35 @@ export default function AnalyticsPage() {
         />
 
         {isInstructor && premiumStatus.isPremium ? (
-          <AnalyticsDashboard instructorId={user.email} />
+          <ScrollReveal delay={100}>
+            <AnalyticsDashboard instructorId={user.email} />
+          </ScrollReveal>
         ) : !premiumStatus.isPremium ? (
-          <div className="text-center p-12">
-            <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
-            <p className="text-muted-foreground">
-              Analytics Dashboard is only available for Premium users.
-            </p>
-          </div>
+          <ScrollReveal delay={100}>
+            <div className="text-center p-12 border-2 border-dashed rounded-xl bg-card/50 backdrop-blur-sm">
+              <BarChart3 className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h2 className="text-2xl font-bold mb-4">Premium Feature</h2>
+              <p className="text-muted-foreground mb-6">
+                Analytics Dashboard is only available for Premium users.
+              </p>
+              <Button 
+                onClick={() => router.push("/premium")} 
+                className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                Upgrade to Premium
+              </Button>
+            </div>
+          </ScrollReveal>
         ) : (
-          <div className="text-center p-12">
-            <h2 className="text-2xl font-bold mb-4">Instructor Access Required</h2>
-            <p className="text-muted-foreground">
-              This feature is available for instructors. Contact support to upgrade your account.
-            </p>
-          </div>
+          <ScrollReveal delay={100}>
+            <div className="text-center p-12 border-2 border-dashed rounded-xl bg-card/50 backdrop-blur-sm">
+              <h2 className="text-2xl font-bold mb-4">Instructor Access Required</h2>
+              <p className="text-muted-foreground">
+                This feature is available for instructors. Contact support to upgrade your account.
+              </p>
+            </div>
+          </ScrollReveal>
         )}
       </div>
     </div>
