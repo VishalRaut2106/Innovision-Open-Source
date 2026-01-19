@@ -150,51 +150,51 @@ const Navbar = () => {
   // Landing page navigation
   const landingNavItems = [
     { id: "features", label: "Features" },
-    { id: "how-it-works", label: "How it Works" },
+    { id: "how-it-works", label: "How It Works" },
     { id: "faq", label: "FAQ" },
-    { href: "/contact", label: "Contact" },
+    { id: "contact", label: "Contact" },
   ];
 
   return (
-    <header className="h-16 w-full border-b fixed top-0 left-0 bg-background/80 backdrop-blur-xl z-50 border-border/50">
-      <div className="h-full max-w-7xl mx-auto px-3 sm:px-4 flex items-center justify-between">
+    <header className="h-16 w-full border-b fixed top-0 left-0 bg-background/80 backdrop-blur-xl z-50 border-border">
+      <div className="h-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 flex items-center justify-between">
         {/* Logo - Left */}
         <Link
           href={user ? `/roadmap` : "/"}
-          className="flex items-center gap-1.5 sm:gap-2 hover:opacity-80 transition-opacity flex-shrink-0 min-w-0"
+          className="flex items-center gap-1.5 sm:gap-2 hover:opacity-80 transition-opacity flex-shrink-0"
         >
-          <Image src="/InnoVision_LOGO-removebg-preview.png" alt="logo" width={32} height={32} className="sm:w-10 sm:h-10" />
-          <span className="text-base sm:text-xl font-bold hidden xs:block truncate">InnoVision</span>
+          <Image src="/InnoVision_LOGO-removebg-preview.png" alt="logo" width={28} height={28} className="sm:w-8 sm:h-8" />
+          <span className="text-sm sm:text-base font-light text-foreground">InnoVision</span>
         </Link>
 
         {/* Desktop Navigation - Centered */}
-        <nav className="hidden md:flex items-center gap-0.5 lg:gap-1 absolute left-1/2 -translate-x-1/2">
+        <nav className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2">
           {user ? (
-            <>
-              {/* All nav items as icons with tooltips */}
+            // Logged in users - show ALL 11 nav items with icons only
+            <div className="flex items-center gap-0.5 px-2 py-1.5 rounded-full border border-border/50 bg-card/80 backdrop-blur-md shadow-sm">
               {[...createMenuItems, ...learnMenuItems, ...moreMenuItems].map((item) => (
                 <Tooltip key={item.href}>
                   <TooltipTrigger asChild>
                     <Link href={item.href}>
                       <Button
                         variant="ghost"
-                        size="icon"
-                        className={`h-9 w-9 ${isActiveLink(item.href) ? 'bg-muted' : ''}`}
+                        size="sm"
+                        className={`h-8 w-8 p-0 rounded-full font-light ${isActiveLink(item.href) ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-muted hover:text-foreground'}`}
                       >
-                        <item.icon className="h-4 w-4 lg:h-5 lg:w-5" />
+                        <item.icon className="h-4 w-4" />
                       </Button>
                     </Link>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="font-medium">{item.label}</p>
-                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                  <TooltipContent className="bg-popover border-border">
+                    <p className="font-light text-foreground">{item.label}</p>
+                    <p className="text-xs text-muted-foreground font-light">{item.description}</p>
                   </TooltipContent>
                 </Tooltip>
               ))}
-            </>
+            </div>
           ) : (
-            // Landing page nav
-            <>
+            // Landing page nav - pill style buttons with text
+            <div className="flex items-center gap-0.5 px-2 py-1.5 rounded-full border border-border/50 bg-card/80 backdrop-blur-md shadow-sm">
               {landingNavItems.map((item) => (
                 <Button
                   key={item.id || item.href}
@@ -206,7 +206,7 @@ const Navbar = () => {
                       document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
-                  className="text-sm"
+                  className="text-sm font-light text-foreground hover:bg-muted hover:text-foreground rounded-full h-8 px-4 transition-colors"
                 >
                   {item.href ? (
                     <Link href={item.href}>{item.label}</Link>
@@ -215,7 +215,7 @@ const Navbar = () => {
                   )}
                 </Button>
               ))}
-            </>
+            </div>
           )}
         </nav>
 
@@ -226,9 +226,9 @@ const Navbar = () => {
               {/* Premium Badge */}
               {isPremium && (
                 <Link href="/premium" className="hidden lg:flex">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 hover:border-yellow-500/50 transition-colors">
-                    <Crown className="h-3.5 w-3.5 text-yellow-600" />
-                    <span className="text-xs font-semibold text-yellow-700 dark:text-yellow-400">PRO</span>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-yellow-500/20 bg-yellow-500/10 hover:border-yellow-500/30 transition-colors">
+                    <Crown className="h-3.5 w-3.5 text-yellow-500" />
+                    <span className="text-xs font-light text-yellow-400">PRO</span>
                   </div>
                 </Link>
               )}
@@ -236,48 +236,48 @@ const Navbar = () => {
               {/* XP */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/30 cursor-help relative">
+                  <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-green-500/20 bg-green-500/10 cursor-help relative">
                     <Sparkles className="h-3.5 w-3.5 text-green-500" />
-                    <span className="text-xs font-semibold text-green-700 dark:text-green-400">{xp}</span>
+                    <span className="text-xs font-light text-green-400">{xp}</span>
                     {show && (
                       <motion.span
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: -10 }}
                         exit={{ opacity: 0 }}
-                        className="absolute -top-2 right-0 text-xs text-green-500 font-bold"
+                        className="absolute -top-2 right-0 text-xs text-green-400 font-light"
                       >
                         +{changed}
                       </motion.span>
                     )}
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p className="font-medium">Level {Math.floor(xp / 500) + 1}</p>
-                  <p className="text-xs text-muted-foreground">{xp} XP earned</p>
+                <TooltipContent className="bg-black border-white/10">
+                  <p className="font-light text-white">Level {Math.floor(xp / 500) + 1}</p>
+                  <p className="text-xs text-gray-400 font-light">{xp} XP earned</p>
                 </TooltipContent>
               </Tooltip>
 
               {/* Streak */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 cursor-help">
+                  <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-orange-500/20 bg-orange-500/10 cursor-help">
                     <Flame className={`h-3.5 w-3.5 ${streak >= 7 ? 'text-red-500' : 'text-orange-500'}`} />
-                    <span className={`text-xs font-semibold ${streak >= 7 ? 'text-red-600 dark:text-red-400' : 'text-orange-700 dark:text-orange-400'}`}>
+                    <span className={`text-xs font-light ${streak >= 7 ? 'text-red-400' : 'text-orange-400'}`}>
                       {streak}
                     </span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p className="font-medium">{streak} Day Streak!</p>
-                  <p className="text-xs text-muted-foreground">Keep learning daily</p>
+                <TooltipContent className="bg-black border-white/10">
+                  <p className="font-light text-white">{streak} Day Streak!</p>
+                  <p className="text-xs text-gray-400 font-light">Keep learning daily</p>
                 </TooltipContent>
               </Tooltip>
             </>
           )}
 
           {/* Theme Toggle - Always visible */}
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-8 w-8 sm:h-9 sm:w-9">
-            {theme === "light" ? <Moon className="h-4 w-4 sm:h-5 sm:w-5" /> : <Sun className="h-4 w-4 sm:h-5 sm:w-5" />}
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-8 w-8 sm:h-9 sm:w-9 rounded-full hover:bg-muted text-foreground">
+            {theme === "light" ? <Moon className="h-4 w-4 sm:h-4 sm:w-4" /> : <Sun className="h-4 w-4 sm:h-4 sm:w-4" />}
           </Button>
 
           {/* Night Mode - Always visible */}
@@ -287,12 +287,14 @@ const Navbar = () => {
                 variant="ghost"
                 size="icon"
                 onClick={toggleNightMode}
-                className={`h-8 w-8 sm:h-9 sm:w-9 ${nightMode ? 'text-amber-500' : ''}`}
+                className={`h-8 w-8 sm:h-9 sm:w-9 rounded-full hover:bg-muted ${nightMode ? 'text-amber-400' : 'text-foreground'}`}
               >
-                <MoonStar className={`h-4 w-4 sm:h-5 sm:w-5 ${nightMode ? 'fill-amber-500' : ''}`} />
+                <MoonStar className={`h-4 w-4 sm:h-4 sm:w-4 ${nightMode ? 'fill-amber-400' : ''}`} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Night Mode (Blue Light Filter)</TooltipContent>
+            <TooltipContent className="bg-background border-border">
+              <p className="font-light text-foreground">Night Mode (Blue Light Filter)</p>
+            </TooltipContent>
           </Tooltip>
 
           {/* User Menu or Login */}
@@ -304,7 +306,7 @@ const Navbar = () => {
                   <Link href="/profile" className="relative hidden sm:block">
                     <Avatar className="h-8 w-8 sm:h-9 sm:w-9 ring-2 ring-transparent hover:ring-blue-500/50 transition-all cursor-pointer">
                       <AvatarImage src={user?.image} alt={user?.name} />
-                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-sm">
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-sm font-light">
                         {user?.name?.[0]?.toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
@@ -315,24 +317,26 @@ const Navbar = () => {
                     )}
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent>View Profile</TooltipContent>
+                <TooltipContent className="bg-black border-white/10">
+                  <p className="font-light text-white">View Profile</p>
+                </TooltipContent>
               </Tooltip>
 
               {/* Settings Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
-                    <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 rounded-full hover:bg-muted text-foreground">
+                    <Settings className="h-4 w-4 sm:h-4 sm:w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 bg-background border-border">
                   <DropdownMenuLabel>
                     <div className="flex flex-col">
-                      <span className="font-medium">{user?.name}</span>
-                      <span className="text-xs text-muted-foreground truncate">{user?.email}</span>
+                      <span className="font-light text-foreground">{user?.name}</span>
+                      <span className="text-xs text-muted-foreground font-light truncate">{user?.email}</span>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-border" />
                   
                   <DropdownMenuItem asChild>
                     <Link href="/profile" className="flex items-center gap-2">
@@ -428,9 +432,8 @@ const Navbar = () => {
             </div>
           ) : (
             <Link href="/login" className="flex-shrink-0">
-              <Button size="sm" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 h-8 px-3 text-xs sm:text-sm sm:h-9 sm:px-4">
-                <LogIn className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Login</span>
+              <Button size="sm" className="bg-transparent border border-border hover:bg-muted text-foreground h-8 px-4 text-xs sm:text-sm sm:h-9 sm:px-5 rounded-full font-light">
+                Get Started
               </Button>
             </Link>
           )}
@@ -439,7 +442,7 @@ const Navbar = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden h-8 w-8 sm:h-9 sm:w-9"
+            className="md:hidden h-8 w-8 sm:h-9 sm:w-9 rounded-full hover:bg-muted text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -454,19 +457,19 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl"
+            className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl"
           >
             <nav className="p-4 space-y-2">
               {user ? (
                 <>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2 mb-2">Create</p>
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-wider px-2 mb-2">Create</p>
                   {createMenuItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors font-light ${
+                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                       }`}
                     >
                       <item.icon className="h-5 w-5" />
@@ -474,14 +477,14 @@ const Navbar = () => {
                     </Link>
                   ))}
 
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2 mb-2 mt-4">Learn</p>
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-wider px-2 mb-2 mt-4">Learn</p>
                   {learnMenuItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors font-light ${
+                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                       }`}
                     >
                       <item.icon className="h-5 w-5" />
@@ -489,14 +492,14 @@ const Navbar = () => {
                     </Link>
                   ))}
 
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2 mb-2 mt-4">More</p>
+                  <p className="text-xs font-light text-muted-foreground uppercase tracking-wider px-2 mb-2 mt-4">More</p>
                   {moreMenuItems.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors font-light ${
+                        isActiveLink(item.href) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                       }`}
                     >
                       <item.icon className="h-5 w-5" />
@@ -517,7 +520,7 @@ const Navbar = () => {
                           router.push(item.href);
                         }
                       }}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-muted/50 hover:text-foreground w-full text-left"
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground w-full text-left font-light"
                     >
                       {item.label}
                     </button>

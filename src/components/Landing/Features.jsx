@@ -12,67 +12,66 @@ import {
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 const courseFeatures = [
-  { icon: Sparkles, title: "AI Course Generation", description: "Generate comprehensive courses on any topic in seconds using Google Gemini AI.", color: "text-blue-500", bgColor: "bg-blue-500/10" },
-  { icon: PlaySquare, title: "YouTube Courses", description: "Transform any YouTube video into a structured learning course automatically.", color: "text-red-500", bgColor: "bg-red-500/10" },
-  { icon: Code, title: "Instructor Studio", description: "WYSIWYG editor with AI assistance, templates, and resource management.", color: "text-cyan-500", bgColor: "bg-cyan-500/10" },
-  { icon: FileText, title: "Content Ingestion", description: "Import PDFs, textbooks, and documents to generate AI-powered courses.", color: "text-orange-500", bgColor: "bg-orange-500/10" },
-  { icon: GraduationCap, title: "Curriculum Browser", description: "Pre-built curriculum from LKG to Class 12, CBSE & State Boards.", color: "text-green-500", bgColor: "bg-green-500/10" },
-  { icon: Layers, title: "Engineering Courses", description: "Specialized courses for all engineering branches and semesters.", color: "text-purple-500", bgColor: "bg-purple-500/10" },
+  { icon: Sparkles, title: "AI Course Generation", description: "Generate comprehensive courses on any topic in seconds using Google Gemini AI.", color: "#3b82f6" },
+  { icon: PlaySquare, title: "YouTube Courses", description: "Transform any YouTube video into a structured learning course automatically.", color: "#ef4444" },
+  { icon: Code, title: "Instructor Studio", description: "WYSIWYG editor with AI assistance, templates, and resource management.", color: "#06b6d4" },
+  { icon: FileText, title: "Content Ingestion", description: "Import PDFs, textbooks, and documents to generate AI-powered courses.", color: "#f97316" },
+  { icon: GraduationCap, title: "Curriculum Browser", description: "Pre-built curriculum from LKG to Class 12, CBSE & State Boards.", color: "#10b981" },
+  { icon: Layers, title: "Engineering Courses", description: "Specialized courses for all engineering branches and semesters.", color: "#a855f7" },
 ];
 
 const gamificationFeatures = [
-  { icon: Zap, title: "XP Points System", description: "Earn XP for lessons, quizzes, courses. Level up as you learn.", color: "text-yellow-500", bgColor: "bg-yellow-500/10" },
-  { icon: Flame, title: "Learning Streaks", description: "Maintain daily streaks with fire animations. Build study habits.", color: "text-orange-500", bgColor: "bg-orange-500/10" },
-  { icon: Medal, title: "8+ Badges", description: "First Steps, Dedicated, Perfectionist, Speed Demon, Night Owl & more.", color: "text-amber-500", bgColor: "bg-amber-500/10" },
-  { icon: Trophy, title: "Leaderboards", description: "Compete worldwide with Daily, Weekly, and All-Time rankings.", color: "text-emerald-500", bgColor: "bg-emerald-500/10" },
-  { icon: Target, title: "Daily Quests", description: "Complete daily challenges for bonus XP rewards.", color: "text-pink-500", bgColor: "bg-pink-500/10" },
-  { icon: Gamepad2, title: "XP Combo Multiplier", description: "Chain correct answers for bonus XP multipliers!", color: "text-violet-500", bgColor: "bg-violet-500/10" },
+  { icon: Zap, title: "XP Points System", description: "Earn XP for lessons, quizzes, courses. Level up as you learn.", color: "#eab308" },
+  { icon: Flame, title: "Learning Streaks", description: "Maintain daily streaks with fire animations. Build study habits.", color: "#f97316" },
+  { icon: Medal, title: "8+ Badges", description: "First Steps, Dedicated, Perfectionist, Speed Demon, Night Owl & more.", color: "#f59e0b" },
+  { icon: Trophy, title: "Leaderboards", description: "Compete worldwide with Daily, Weekly, and All-Time rankings.", color: "#10b981" },
+  { icon: Target, title: "Daily Quests", description: "Complete daily challenges for bonus XP rewards.", color: "#ec4899" },
+  { icon: Gamepad2, title: "XP Combo Multiplier", description: "Chain correct answers for bonus XP multipliers!", color: "#8b5cf6" },
 ];
 
 const learningFeatures = [
-  { icon: Brain, title: "Interactive Quizzes", description: "MCQ, Fill-in-the-blanks, Match the Following for each chapter.", color: "text-purple-500", bgColor: "bg-purple-500/10" },
-  { icon: Clock, title: "Reading Time", description: "Estimated reading time for each chapter (200 wpm).", color: "text-blue-500", bgColor: "bg-blue-500/10" },
-  { icon: Copy, title: "Code Copy Button", description: "One-click copy for all code blocks with success animation.", color: "text-slate-500", bgColor: "bg-slate-500/10" },
-  { icon: Bookmark, title: "Bookmark System", description: "Save favorite chapters for quick access in your profile.", color: "text-rose-500", bgColor: "bg-rose-500/10" },
-  { icon: Globe, title: "100+ Languages", description: "Learn in your preferred language with real-time AI translation.", color: "text-teal-500", bgColor: "bg-teal-500/10" },
-  { icon: Compass, title: "AI Roadmaps", description: "Step-by-step learning paths organized into 8-12 chapters.", color: "text-indigo-500", bgColor: "bg-indigo-500/10" },
+  { icon: Brain, title: "Interactive Quizzes", description: "MCQ, Fill-in-the-blanks, Match the Following for each chapter.", color: "#a855f7" },
+  { icon: Clock, title: "Reading Time", description: "Estimated reading time for each chapter (200 wpm).", color: "#3b82f6" },
+  { icon: Copy, title: "Code Copy Button", description: "One-click copy for all code blocks with success animation.", color: "#64748b" },
+  { icon: Bookmark, title: "Bookmark System", description: "Save favorite chapters for quick access in your profile.", color: "#f43f5e" },
+  { icon: Globe, title: "100+ Languages", description: "Learn in your preferred language with real-time AI translation.", color: "#14b8a6" },
+  { icon: Compass, title: "AI Roadmaps", description: "Step-by-step learning paths organized into 8-12 chapters.", color: "#6366f1" },
 ];
 
 const premiumFeatures = [
-  { icon: BarChart3, title: "Analytics Dashboard", description: "Track performance metrics, XP graphs, and learning insights.", color: "text-blue-500", bgColor: "bg-blue-500/10" },
-  { icon: Calendar, title: "Activity Heatmap", description: "GitHub-style activity heatmap showing your learning consistency.", color: "text-green-500", bgColor: "bg-green-500/10" },
-  { icon: Brain, title: "AI Personalization", description: "Smart recommendations using reinforcement learning algorithms.", color: "text-purple-500", bgColor: "bg-purple-500/10" },
-  { icon: Wifi, title: "Offline Learning", description: "Download courses for offline access. Learn anywhere, anytime.", color: "text-orange-500", bgColor: "bg-orange-500/10" },
-  { icon: Network, title: "LMS Integration", description: "Connect with Moodle and Canvas for grade syncing.", color: "text-red-500", bgColor: "bg-red-500/10" },
-  { icon: Briefcase, title: "Project-Based Learning", description: "Build real-world projects with mentor guidance and reviews.", color: "text-teal-500", bgColor: "bg-teal-500/10" },
-  { icon: Video, title: "Multimodal Content", description: "Generate audio scripts and video storyboards for courses.", color: "text-pink-500", bgColor: "bg-pink-500/10" },
-  { icon: FileText, title: "Research Platform", description: "Export anonymized datasets for educational research.", color: "text-cyan-500", bgColor: "bg-cyan-500/10" },
+  { icon: BarChart3, title: "Analytics Dashboard", description: "Track performance metrics, XP graphs, and learning insights.", color: "#3b82f6" },
+  { icon: Calendar, title: "Activity Heatmap", description: "GitHub-style activity heatmap showing your learning consistency.", color: "#10b981" },
+  { icon: Brain, title: "AI Personalization", description: "Smart recommendations using reinforcement learning algorithms.", color: "#a855f7" },
+  { icon: Wifi, title: "Offline Learning", description: "Download courses for offline access. Learn anywhere, anytime.", color: "#f97316" },
+  { icon: Network, title: "LMS Integration", description: "Connect with Moodle and Canvas for grade syncing.", color: "#ef4444" },
+  { icon: Briefcase, title: "Project-Based Learning", description: "Build real-world projects with mentor guidance and reviews.", color: "#14b8a6" },
+  { icon: Video, title: "Multimodal Content", description: "Generate audio scripts and video storyboards for courses.", color: "#ec4899" },
+  { icon: FileText, title: "Research Platform", description: "Export anonymized datasets for educational research.", color: "#06b6d4" },
 ];
 
 const uxFeatures = [
-  { icon: Moon, title: "Night Mode", description: "Blue light filter for comfortable late-night studying.", color: "text-indigo-500", bgColor: "bg-indigo-500/10" },
-  { icon: Bell, title: "Study Reminders", description: "Browser push notifications for scheduled study times.", color: "text-yellow-500", bgColor: "bg-yellow-500/10" },
-  { icon: Quote, title: "Motivational Quotes", description: "Rotating inspirational quotes on your dashboard.", color: "text-pink-500", bgColor: "bg-pink-500/10" },
-  { icon: Users, title: "Profile Dashboard", description: "Overview, Progress, Courses, Compete, Activity, and Settings.", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+  { icon: Moon, title: "Night Mode", description: "Blue light filter for comfortable late-night studying.", color: "#6366f1" },
+  { icon: Bell, title: "Study Reminders", description: "Browser push notifications for scheduled study times.", color: "#eab308" },
+  { icon: Quote, title: "Motivational Quotes", description: "Rotating inspirational quotes on your dashboard.", color: "#ec4899" },
+  { icon: Users, title: "Profile Dashboard", description: "Overview, Progress, Courses, Compete, Activity, and Settings.", color: "#3b82f6" },
 ];
 
 const FeatureCard = ({ feature, premium, index = 0 }) => (
   <ScrollReveal delay={index * 100} direction="up">
-    <Card className="group relative overflow-hidden border-border/50 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-2 h-full">
+    <Card className="group relative overflow-hidden border border-border bg-background backdrop-blur-sm transition-all duration-300 hover:border-border/60 hover:-translate-y-2 h-full">
       {premium && (
         <div className="absolute top-3 right-3">
-          <span className="px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 text-xs font-medium flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-full border border-yellow-500/20 text-yellow-400 text-xs font-light flex items-center gap-1">
             <Crown className="h-3 w-3" /> Premium
           </span>
         </div>
       )}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:via-transparent group-hover:to-purple-500/10 transition-all duration-500" />
       <CardHeader className="relative">
-        <div className={`w-12 h-12 rounded-xl ${feature.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-          <feature.icon className={`h-6 w-6 ${feature.color}`} />
+        <div className="w-12 h-12 rounded-xl border border-border flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ borderColor: `${feature.color}20` }}>
+          <feature.icon className="h-6 w-6" style={{ color: feature.color }} />
         </div>
-        <CardTitle className={`text-lg font-semibold mb-2 ${premium ? 'pr-16' : ''}`}>{feature.title}</CardTitle>
-        <CardDescription className="text-muted-foreground leading-relaxed text-sm">{feature.description}</CardDescription>
+        <CardTitle className={`text-lg font-light mb-2 text-foreground ${premium ? 'pr-16' : ''}`}>{feature.title}</CardTitle>
+        <CardDescription className="text-muted-foreground leading-relaxed text-sm font-light">{feature.description}</CardDescription>
       </CardHeader>
     </Card>
   </ScrollReveal>
@@ -82,10 +81,10 @@ const FeatureSection = ({ icon: Icon, iconColor, title, features, columns = 3, b
   <div className="mb-20">
     <ScrollReveal direction="up">
       <div className="flex items-center justify-center gap-2 mb-8">
-        <Icon className={`h-5 w-5 ${iconColor}`} />
-        <h3 className="text-xl font-semibold">{title}</h3>
+        <Icon className="h-5 w-5 text-blue-500" />
+        <h3 className="text-xl font-light text-foreground">{title}</h3>
         {badge && (
-          <span className="px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 text-xs font-medium">
+          <span className="px-2 py-0.5 rounded-full border border-blue-500/20 text-blue-400 text-xs font-light">
             {badge}
           </span>
         )}
@@ -100,32 +99,27 @@ const FeatureSection = ({ icon: Icon, iconColor, title, features, columns = 3, b
 );
 
 const whyChooseFeatures = [
-  { icon: Sparkles, title: "AI-Powered Generation", description: "Our advanced AI creates comprehensive courses on any topic in seconds.", color: "text-blue-500", bgColor: "bg-blue-500/10" },
-  { icon: Layers, title: "Chapter-wise Learning", description: "Structured content organized into logical chapters for better understanding.", color: "text-purple-500", bgColor: "bg-purple-500/10" },
-  { icon: Compass, title: "Personalized Path", description: "Courses adapt to your learning style, pace, and existing knowledge.", color: "text-cyan-500", bgColor: "bg-cyan-500/10" },
-  { icon: BookOpen, title: "Interactive Exercises", description: "Reinforce learning with quizzes, challenges, and practical exercises.", color: "text-green-500", bgColor: "bg-green-500/10" },
-  { icon: CheckCircle, title: "Progress Tracking", description: "Monitor your learning journey with detailed analytics and insights.", color: "text-orange-500", bgColor: "bg-orange-500/10" },
-  { icon: Target, title: "Any Topic, Any Level", description: "From beginner to advanced, learn anything you're interested in.", color: "text-pink-500", bgColor: "bg-pink-500/10" },
+  { icon: Sparkles, title: "AI-Powered Generation", description: "Our advanced AI creates comprehensive courses on any topic in seconds.", color: "#3b82f6" },
+  { icon: Layers, title: "Chapter-wise Learning", description: "Structured content organized into logical chapters for better understanding.", color: "#a855f7" },
+  { icon: Compass, title: "Personalized Path", description: "Courses adapt to your learning style, pace, and existing knowledge.", color: "#06b6d4" },
+  { icon: BookOpen, title: "Interactive Exercises", description: "Reinforce learning with quizzes, challenges, and practical exercises.", color: "#10b981" },
+  { icon: CheckCircle, title: "Progress Tracking", description: "Monitor your learning journey with detailed analytics and insights.", color: "#f97316" },
+  { icon: Target, title: "Any Topic, Any Level", description: "From beginner to advanced, learn anything you're interested in.", color: "#ec4899" },
 ];
 
 const Features = () => {
   const [showAllPremium, setShowAllPremium] = useState(false);
 
   return (
-    <section id="features" className="relative w-screen py-20 md:py-32 bg-gradient-to-b from-background via-muted/30 to-background">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-purple-500/5 rounded-full blur-[100px]" />
-      </div>
-
+    <section id="features" className="relative w-screen py-20 md:py-32 bg-background">
       <div className="container relative z-10 px-4 md:px-6 mx-auto">
         {/* Why Choose InnoVision Section */}
         <ScrollReveal direction="up">
           <div className="flex flex-col items-center justify-center text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-foreground">
               Why Choose InnoVision?
             </h2>
-            <p className="max-w-2xl text-muted-foreground text-lg mb-12">
+            <p className="max-w-2xl text-muted-foreground text-lg mb-12 font-light">
               Our platform combines cutting-edge AI with proven learning methodologies to create the most effective learning experience.
             </p>
           </div>
@@ -140,14 +134,14 @@ const Features = () => {
         {/* All Features Section */}
         <ScrollReveal direction="up">
           <div className="flex flex-col items-center justify-center text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border text-foreground text-sm font-light mb-4">
               <Zap className="h-3.5 w-3.5" /> 50+ Features
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-foreground">
               Everything You Need to{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Learn Effectively</span>
+              <span className="text-blue-500">Learn Effectively</span>
             </h2>
-            <p className="max-w-2xl text-muted-foreground text-lg">
+            <p className="max-w-2xl text-muted-foreground text-lg font-light">
               Explore our comprehensive suite of features designed to enhance your learning journey.
             </p>
           </div>
@@ -158,33 +152,33 @@ const Features = () => {
         <FeatureSection icon={BookOpen} iconColor="text-purple-500" title="Enhanced Learning Experience" features={learningFeatures} />
 
         <div className="mb-20">
-          <FeatureSection icon={Crown} iconColor="text-yellow-500" title="Premium Features" features={showAllPremium ? premiumFeatures : premiumFeatures.slice(0, 4)} columns={4} badge="7-Day Free Trial" />
+          <FeatureSection icon={Crown} iconColor="text-blue-500" title="Premium Features" features={showAllPremium ? premiumFeatures : premiumFeatures.slice(0, 4)} columns={4} badge="7-Day Free Trial" />
           {premiumFeatures.length > 4 && (
             <div className="flex justify-center mt-6">
-              <Button variant="outline" onClick={() => setShowAllPremium(!showAllPremium)} className="gap-2 transition-all duration-300 hover:scale-105">
+              <Button variant="outline" onClick={() => setShowAllPremium(!showAllPremium)} className="gap-2 transition-all duration-300 hover:scale-105 border border-border text-foreground hover:bg-muted rounded-full font-light">
                 {showAllPremium ? <>Show Less <ChevronUp className="h-4 w-4" /></> : <>Show All Premium Features <ChevronDown className="h-4 w-4" /></>}
               </Button>
             </div>
           )}
         </div>
 
-        <FeatureSection icon={Users} iconColor="text-green-500" title="User Experience" features={uxFeatures} columns={4} />
+        <FeatureSection icon={Users} iconColor="text-blue-500" title="User Experience" features={uxFeatures} columns={4} />
 
         <StaggerReveal className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-5xl mx-auto" staggerDelay={100}>
           {[
-            { icon: Shield, label: "Secure", desc: "Data Protected" },
-            { icon: CheckCircle, label: "PWA Support", desc: "Install as App" },
-            { icon: Globe, label: "Multi-language", desc: "100+ Languages" },
-            { icon: Download, label: "Offline Mode", desc: "Learn Anywhere" },
-            { icon: Code, label: "Code Editor", desc: "Built-in IDE" },
-            { icon: Crown, label: "PRO Badge", desc: "Premium Users" },
+            { icon: Shield, label: "Secure", desc: "Data Protected", color: "#10b981" },
+            { icon: CheckCircle, label: "PWA Support", desc: "Install as App", color: "#3b82f6" },
+            { icon: Globe, label: "Multi-language", desc: "100+ Languages", color: "#a855f7" },
+            { icon: Download, label: "Offline Mode", desc: "Learn Anywhere", color: "#f97316" },
+            { icon: Code, label: "Code Editor", desc: "Built-in IDE", color: "#06b6d4" },
+            { icon: Crown, label: "PRO Badge", desc: "Premium Users", color: "#eab308" },
           ].map((item) => (
-            <div key={item.label} className="text-center p-4 rounded-xl bg-card/50 border border-border/50 hover:border-primary/20 transition-all duration-300 hover:scale-105 cursor-default">
-              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
-                <item.icon className="h-5 w-5 text-muted-foreground" />
+            <div key={item.label} className="text-center p-4 rounded-xl bg-background border border-border hover:border-border/60 transition-all duration-300 hover:scale-105 cursor-default group">
+              <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center mx-auto mb-3 group-hover:border-border/60 transition-colors" style={{ borderColor: `${item.color}20` }}>
+                <item.icon className="h-5 w-5" style={{ color: item.color }} />
               </div>
-              <p className="font-medium text-sm">{item.label}</p>
-              <p className="text-xs text-muted-foreground">{item.desc}</p>
+              <p className="font-light text-sm text-foreground">{item.label}</p>
+              <p className="text-xs text-muted-foreground font-light">{item.desc}</p>
             </div>
           ))}
         </StaggerReveal>

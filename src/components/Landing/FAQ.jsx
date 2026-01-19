@@ -31,15 +31,15 @@ const faqs = [
 ];
 
 const FAQItem = ({ question, answer, isOpen, onClick }) => (
-  <div className={`rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden transition-all duration-300 ${isOpen ? 'shadow-lg shadow-primary/5 border-primary/20' : 'hover:border-primary/20'}`}>
+  <div className={`rounded-2xl border border-border bg-background backdrop-blur-sm overflow-hidden transition-all duration-300 ${isOpen ? 'border-blue-500/30' : 'hover:border-border/60'}`}>
     <button onClick={onClick} className="flex w-full items-center justify-between p-5 text-left group">
-      <span className="font-medium pr-4 group-hover:text-primary transition-colors">{question}</span>
-      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-primary text-primary-foreground' : 'bg-muted group-hover:bg-primary/10'}`}>
+      <span className="font-light pr-4 group-hover:text-blue-500 transition-colors text-foreground">{question}</span>
+      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-blue-500 text-white' : 'border border-border text-foreground group-hover:border-blue-500/30'}`}>
         {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
       </div>
     </button>
     <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-      <div className="px-5 pb-5 text-muted-foreground leading-relaxed">{answer}</div>
+      <div className="px-5 pb-5 text-muted-foreground leading-relaxed font-light">{answer}</div>
     </div>
   </div>
 );
@@ -48,23 +48,18 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section id="faq" className="relative w-screen py-20 md:py-32 bg-gradient-to-b from-muted/50 via-background to-muted/50">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-0 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 right-0 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px]" />
-      </div>
-
+    <section id="faq" className="relative w-screen py-20 md:py-32 bg-background">
       <div className="container relative z-10 px-4 mx-auto md:px-6">
         <ScrollReveal direction="up">
           <div className="flex flex-col items-center justify-center text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border text-foreground text-sm font-light mb-4">
               <HelpCircle className="h-3.5 w-3.5" /> FAQ
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight mb-4 text-foreground">
               Frequently Asked{" "}
-              <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Questions</span>
+              <span className="text-blue-500">Questions</span>
             </h2>
-            <p className="max-w-2xl text-muted-foreground text-lg">
+            <p className="max-w-2xl text-muted-foreground text-lg font-light">
               Find answers to common questions about InnoVision's AI-powered learning platform.
             </p>
           </div>

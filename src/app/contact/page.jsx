@@ -71,36 +71,47 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-[92vh] overflow-hidden bg-background relative">
-      <PageBackground />
-      <GridPattern opacity={0.02} />
+    <div className="flex flex-col min-h-screen overflow-hidden bg-black relative">
+      {/* Animated dots background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {[...Array(100)].map((_, i) => (
+          <div
+            key={i}
+            className="dot absolute w-1 h-1 bg-white/20 rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 2}s`,
+            }}
+          />
+        ))}
+      </div>
       
-      <div className="flex-1 flex flex-col relative z-10">
+      <div className="flex-1 flex flex-col relative z-10 pt-24">
       <ToastContainer />
-        <div className="bg-transparent py-6 px-4">
+        <div className="bg-transparent py-12 px-4">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full mb-4 shadow-lg shadow-blue-500/25">
-                <Mail className="h-8 w-8 text-white" />
+              <div className="inline-flex items-center justify-center w-16 h-16 border border-white/10 rounded-full mb-6">
+                <Mail className="h-7 w-7 text-blue-500" />
               </div>
-              <h1 className="text-foreground text-5xl md:text-6xl font-bold mb-6">Contact Us</h1>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              <h1 className="text-white text-4xl md:text-5xl font-light mb-4">Get in Touch</h1>
+              <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto font-light">
                 Have questions? The quickest way to get in touch with us is using the contact information below.
               </p>
             </div>
           </ScrollReveal>
         </div>
-        <div className="bg-muted/30 backdrop-blur-sm flex-1 py-8 px-4">
+        <div className="flex-1 py-8 px-4">
           <ScrollReveal delay={100}>
             <div className="max-w-xl mx-auto">
-              <h2 className="text-muted-foreground text-lg md:text-xl font-bold mb-4 text-center">Send a Message</h2>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <input
                     type="email"
                     placeholder="Email"
-                    className="w-full px-4 py-3 rounded-xl bg-background/50 backdrop-blur-sm border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
+                    className="w-full px-5 py-3.5 rounded-full bg-black border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all font-light"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -110,40 +121,40 @@ export default function ContactPage() {
                 <div>
                   <textarea
                     placeholder="Message"
-                    rows="4"
-                    className="w-full px-4 py-3 rounded-xl bg-background/50 backdrop-blur-sm border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all resize-none"
+                    rows="5"
+                    className="w-full px-5 py-3.5 rounded-2xl bg-black border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all resize-none font-light"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
                   />
                 </div>
 
-                <div className="flex justify-center pt-0">
+                <div className="flex justify-center pt-2">
                   <button
                     type="submit"
                     ref={formRef}
-                    className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-blue-500/25"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-light transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     <Send className="h-4 w-4" />
-                    Submit 
+                    Send Message
                   </button>
                 </div>
               </form>
 
-              <div className="flex justify-center text-muted-foreground space-x-6 mt-10">
-                <a href="https://www.instagram.com/hands_on_coding_028/#" className="text-2xl hover:text-foreground hover:scale-110 transition-all duration-300">
+              <div className="flex justify-center text-gray-400 space-x-6 mt-12">
+                <a href="https://www.instagram.com/hands_on_coding_028/#" className="text-2xl hover:text-white hover:scale-110 transition-all duration-300">
                 <FaInstagram />
                 </a>
-                <a href="https://wa.me/7019003366" className="text-2xl hover:text-foreground hover:scale-110 transition-all duration-300">
+                <a href="https://wa.me/7019003366" className="text-2xl hover:text-white hover:scale-110 transition-all duration-300">
                 <IoLogoWhatsapp />
                 </a>
-                <a href="https://github.com/ItsVikasA" className="text-2xl hover:text-foreground hover:scale-110 transition-all duration-300">
+                <a href="https://github.com/ItsVikasA" className="text-2xl hover:text-white hover:scale-110 transition-all duration-300">
                   <FaGithub />
                 </a>
-                <a href="https://www.linkedin.com/in/vikas028/" className="text-2xl hover:text-foreground hover:scale-110 transition-all duration-300">
+                <a href="https://www.linkedin.com/in/vikas028/" className="text-2xl hover:text-white hover:scale-110 transition-all duration-300">
                 <FaLinkedin />
                 </a>
-                <a href="https://www.youtube.com/@hands_on_coding_028" className="text-2xl hover:text-foreground hover:scale-110 transition-all duration-300">
+                <a href="https://www.youtube.com/@hands_on_coding_028" className="text-2xl hover:text-white hover:scale-110 transition-all duration-300">
                 <FaYoutube />
                 </a>
               </div>
