@@ -7,9 +7,10 @@ import { calculateEstimatedTime } from "@/lib/time-utils";
 import { Progress } from "@/components/ui/progress";
 import DeleteRoadmap from "./DeleteRoadmap";
 import ArchiveCourse from "./ArchiveCourse";
+import DuplicateCourse from "./DuplicateCourse";
 
 const CourseCard = ({ course, onDelete }) => {
-  const { id, courseTitle, courseDescription, chapterCount, difficulty, chapters, archived } = course;
+  const { id, courseTitle, courseDescription, chapterCount, difficulty, chapters, archived = false } = course;
 
   // Calculate progress percentage
   const calculateProgress = () => {
@@ -74,6 +75,11 @@ const CourseCard = ({ course, onDelete }) => {
             )}
           </CardTitle>
           <div className="flex items-center gap-1 relative z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+            <DuplicateCourse
+              id={id}
+              courseTitle={courseTitle}
+              onDuplicate={onDelete}
+            />
             <ArchiveCourse
               id={id}
               courseTitle={courseTitle}

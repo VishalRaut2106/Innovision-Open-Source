@@ -77,9 +77,10 @@ export default function page() {
     // Filter and sort courses
     const filteredCourses = completedCourses
         .filter((course) => {
-            // Archive filter
-            if (archiveFilter === "active" && course.archived) return false;
-            if (archiveFilter === "archived" && !course.archived) return false;
+            // Archive filter - treat undefined/null as not archived
+            const isArchived = course.archived === true;
+            if (archiveFilter === "active" && isArchived) return false;
+            if (archiveFilter === "archived" && !isArchived) return false;
             // "all" shows both
 
             // Search filter

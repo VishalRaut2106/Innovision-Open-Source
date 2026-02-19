@@ -19,6 +19,7 @@ const ArchiveCourse = ({ id, courseTitle, isArchived = false, onArchive }) => {
 
   async function toggleArchive() {
     showLoader();
+    console.log("Archiving course:", id, "Current archived status:", isArchived);
     try {
       const response = await fetch(`/api/roadmap/${id}/archive`, {
         method: "PATCH",
@@ -29,18 +30,23 @@ const ArchiveCourse = ({ id, courseTitle, isArchived = false, onArchive }) => {
       });
 
       const data = await response.json();
+      console.log("Archive API response:", response.status, data);
 
       if (response.ok) {
         toast.success(data.message || `Course ${isArchived ? 'unarchived' : 'archived'} successfully!`);
         hideLoader();
         
-        // Refresh the course list
-        if (onArchive) {
-          onArchive();
-        }
+        // Refresh the course list after a short delay to ensure DB is updated
+        setTimeout(() => {
+          console.log("Refreshing course list...");
+          if (onArchive) {
+            onArchive();
+          }
+        }, 500);
       } else {
         hideLoader();
         toast.error(data.message || `Failed to ${isArchived ? 'unarchive' : 'archive'} course`);
+        console.error("Archive API error:", data);
       }
     } catch (error) {
       hideLoader();
