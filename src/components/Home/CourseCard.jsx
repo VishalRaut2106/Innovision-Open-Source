@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock, BookOpen, Trash2, CheckCircle2 } from "lucide-react";
+import { Clock, BookOpen, CheckCircle2 } from "lucide-react";
 import { calculateEstimatedTime } from "@/lib/time-utils";
 import { Progress } from "@/components/ui/progress";
 import DeleteRoadmap from "./DeleteRoadmap";
+import ArchiveCourse from "./ArchiveCourse";
 
 const CourseCard = ({ course, onDelete }) => {
-  const { id, courseTitle, courseDescription, chapterCount, difficulty, chapters } = course;
+  const { id, courseTitle, courseDescription, chapterCount, difficulty, chapters, archived } = course;
 
   // Calculate progress percentage
   const calculateProgress = () => {
@@ -66,12 +67,24 @@ const CourseCard = ({ course, onDelete }) => {
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="text-lg line-clamp-2 leading-tight">
             {courseTitle}
+            {archived && (
+              <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
+                Archived
+              </span>
+            )}
           </CardTitle>
-          <DeleteRoadmap
-            id={id}
-            onDelete={onDelete}
-            className="relative z-10 opacity-0 group-hover:opacity-100 transition-opacity"
-          />
+          <div className="flex items-center gap-1 relative z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+            <ArchiveCourse
+              id={id}
+              courseTitle={courseTitle}
+              isArchived={archived}
+              onArchive={onDelete}
+            />
+            <DeleteRoadmap
+              id={id}
+              onDelete={onDelete}
+            />
+          </div>
         </div>
         <CardDescription className="line-clamp-2 text-sm">
           {courseDescription}

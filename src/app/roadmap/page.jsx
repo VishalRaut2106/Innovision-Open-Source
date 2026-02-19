@@ -19,15 +19,17 @@ export default function page() {
     // Filter states
     const [searchQuery, setSearchQuery] = useState("");
     const [difficultyFilter, setDifficultyFilter] = useState("all");
+    const [archiveFilter, setArchiveFilter] = useState("active"); // active, archived, all
     const [sortBy, setSortBy] = useState("newest");
 
     // Load filter preferences from localStorage
     useEffect(() => {
         const savedFilters = localStorage.getItem("courseFilters");
         if (savedFilters) {
-            const { search, difficulty, sort } = JSON.parse(savedFilters);
+            const { search, difficulty, archive, sort } = JSON.parse(savedFilters);
             setSearchQuery(search || "");
             setDifficultyFilter(difficulty || "all");
+            setArchiveFilter(archive || "active");
             setSortBy(sort || "newest");
         }
     }, []);
@@ -39,10 +41,11 @@ export default function page() {
             JSON.stringify({
                 search: searchQuery,
                 difficulty: difficultyFilter,
+                archive: archiveFilter,
                 sort: sortBy,
             })
         );
-    }, [searchQuery, difficultyFilter, sortBy]);
+    }, [searchQuery, difficultyFilter, archiveFilter, sortBy]);
 
     async function fetchRoadmaps() {
         setLoading(true);
@@ -74,6 +77,11 @@ export default function page() {
     // Filter and sort courses
     const filteredCourses = completedCourses
         .filter((course) => {
+            // Archive filter
+            if (archiveFilter === "active" && course.archived) return false;
+            if (archiveFilter === "archived" && !course.archived) return false;
+            // "all" shows both
+
             // Search filter
             const matchesSearch = course.courseTitle
                 .toLowerCase()
@@ -101,11 +109,12 @@ export default function page() {
     const clearFilters = () => {
         setSearchQuery("");
         setDifficultyFilter("all");
+        setArchiveFilter("active");
         setSortBy("newest");
     };
 
     // Check if any filters are active
-    const hasActiveFilters = searchQuery !== "" || difficultyFilter !== "all" || sortBy !== "newest";
+    const hasActiveFilters = searchQuery !== "" || difficultyFilter !== "all" || archiveFilter !== "active" || sortBy !== "newest";
 
     return (
         <div className="min-h-screen bg-background relative">
@@ -161,6 +170,18 @@ export default function page() {
                                     <SelectItem value="fast">Fast-paced</SelectItem>
                                     <SelectItem value="balanced">Balanced</SelectItem>
                                     <SelectItem value="in-depth">In-depth</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            {/* Archive Filter */}
+                            <Select value={archiveFilter} onValueChange={setArchiveFilter}>
+                                <SelectTrigger className="w-[140px] h-9 bg-card/50 backdrop-blur-sm border-border/50">
+                                    <SelectValue placeholder="Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="active">Active</SelectItem>
+                                    <SelectItem value="archived">Archived</SelectItem>
+                                    <SelectItem value="all">All Courses</SelectItem>
                                 </SelectContent>
                             </Select>
 
