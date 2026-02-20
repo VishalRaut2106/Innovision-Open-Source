@@ -7,6 +7,7 @@ import { calculateEstimatedTime } from "@/lib/time-utils";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import DeleteRoadmap from "./DeleteRoadmap";
+import ArchiveCourse from "./ArchiveCourse";
 import DuplicateCourse from "./DuplicateCourse";
 
 const CourseCard = ({ course, onDelete, isSelectable, isSelected, onSelect }) => {
