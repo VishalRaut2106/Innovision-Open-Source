@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { loader } from "@/components/ui/Custom/ToastLoader";
 import { useRouter } from "next/navigation";
+import ExportCourse from "@/components/export/ExportCourse";
 import ShareCourse from "@/components/share/ShareCourse";
 
 function Roadmap({ roadMap, id }) {
@@ -89,6 +90,9 @@ function Roadmap({ roadMap, id }) {
           
           {/* Action Buttons */}
           <div className="flex gap-2 shrink-0">
+            <ExportCourse
+              courseId={id}
+              courseTitle={roadMap.courseTitle}
             <ShareCourse
               courseId={id}
               courseTitle={roadMap.courseTitle}
