@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, TrendingUp, BookOpen, Calendar, Settings } from "lucide-react";
+import { Trophy, TrendingUp, BookOpen, Calendar, Settings, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { ProblemSolvedChart } from "@/components/ui/problem-sloved-chart";
@@ -153,7 +153,7 @@ export default function ProfilePage() {
           {/* Main Content - All original tabs */}
           <div className="space-y-6">
             <Tabs defaultValue="overview" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-7">
+              <TabsList className="grid w-full grid-cols-8">
                 <TabsTrigger value="overview">
                   <Trophy className="h-4 w-4 mr-2" />
                   Overview
@@ -173,6 +173,10 @@ export default function ProfilePage() {
                 <TabsTrigger value="compete">
                   <Trophy className="h-4 w-4 mr-2" />
                   Compete
+                </TabsTrigger>
+                <TabsTrigger value="certificates">
+                  <Award className="h-4 w-4 mr-2" />
+                  Certificates
                 </TabsTrigger>
                 <TabsTrigger value="research">
                   <Database className="h-4 w-4 mr-2" />
@@ -392,6 +396,26 @@ export default function ProfilePage() {
                     </CardContent>
                   </Card>
                 </LockedFeature>
+              </TabsContent>
+
+              {/* Certificates Tab */}
+              <TabsContent value="certificates" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Award className="h-5 w-5 text-yellow-500" />
+                      My Certificates
+                    </CardTitle>
+                    <CardDescription>
+                      View and download your course completion certificates
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button onClick={() => router.push("/profile/certificates")} className="w-full">
+                      View All Certificates
+                    </Button>
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               {/* Settings Tab */}
