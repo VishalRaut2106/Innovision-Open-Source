@@ -3,7 +3,11 @@ import { adminDb, FieldValue } from "@/lib/firebase-admin";
 import { getServerSession } from "@/lib/auth-server";
 
 async function completeChapter(chapter, roadmapId, user) {
-  const docRef = adminDb.collection("users").doc(user.email).collection("roadmaps").doc(roadmapId);
+  const docRef = adminDb
+    .collection("users")
+    .doc(user.email)
+    .collection("roadmaps")
+    .doc(roadmapId);
   const docSnap = await docRef.get();
   if (docSnap.exists) {
     const roadmap = docSnap.data();
@@ -21,14 +25,14 @@ async function completeChapter(chapter, roadmapId, user) {
         let stats = statsDoc.exists
           ? statsDoc.data()
           : {
-            xp: 0,
-            level: 1,
-            streak: 1,
-            badges: [],
-            rank: 0,
-            achievements: [],
-            lastActive: new Date().toISOString(),
-          };
+              xp: 0,
+              level: 1,
+              streak: 1,
+              badges: [],
+              rank: 0,
+              achievements: [],
+              lastActive: new Date().toISOString(),
+            };
 
         const newXP = (stats.xp || 0) + xpGained;
         const newLevel = Math.floor(newXP / 500) + 1;
@@ -78,13 +82,9 @@ async function completeChapter(chapter, roadmapId, user) {
 
     const allDone = completedChapters.length === updatedChapters.length;
     if (allDone) {
-      await docRef.update({
-        completed: true,
-      });
+      await docRef.update({ completed: true });
     }
-    await docRef.update({
-      chapters: updatedChapters,
-    });
+    await docRef.update({ chapters: updatedChapters });
     return allDone;
   }
   return false;
@@ -94,19 +94,33 @@ export async function POST(req) {
   try {
     const session = await getServerSession();
     if (!session?.user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
     }
 
-    const { task, roadmap, chapter, isCorrect, userAnswer } = await req.json();
+    const body = await req.json();
+    const { task, roadmap, chapter, isCorrect, userAnswer } = body;
 
-    if (!task || !roadmap || !chapter || typeof isCorrect === "undefined" || !userAnswer) {
+    // Validate required fields — use explicit null/undefined checks so falsy
+    // values like 0 (chapter 0) or "" are not incorrectly rejected.
+    const missing = [];
+    if (!task) missing.push("task");
+    if (!roadmap) missing.push("roadmap");
+    if (chapter === undefined || chapter === null || chapter === "") missing.push("chapter");
+    if (isCorrect === undefined || isCorrect === null) missing.push("isCorrect");
+    if (userAnswer === undefined || userAnswer === null) missing.push("userAnswer");
+
+    if (missing.length > 0) {
       return NextResponse.json(
-        {
-          message: "Missing or invalid required fields: task, roadmap, chapter, or isCorrect",
-        },
+        { error: `Missing required fields: ${missing.join(", ")}` },
         { status: 400 }
       );
     }
+
+    // Normalise chapter to string for Firestore doc ID
+    const chapterStr = String(chapter);
 
     const taskRef = adminDb
       .collection("users")
@@ -114,27 +128,53 @@ export async function POST(req) {
       .collection("roadmaps")
       .doc(roadmap)
       .collection("chapters")
-      .doc(chapter)
+      .doc(chapterStr)
       .collection("tasks")
       .doc("task");
 
     const allTasksSnap = await taskRef.get();
     let allTasks = allTasksSnap.exists ? Object.values(allTasksSnap.data()) : [];
 
-    const taskIndex = allTasks.findIndex((e) => e.question === task.question);
-
-    if (taskIndex === -1) {
-      return NextResponse.json({ message: "Task not found" }, { status: 404 });
+    if (allTasks.length === 0) {
+      return NextResponse.json(
+        { error: "No tasks found for this chapter. Please refresh and try again." },
+        { status: 404 }
+      );
     }
 
+    // Find the task — try by `id` first, fall back to question text trim-match
+    let taskIndex = -1;
+    if (task.id !== undefined && task.id !== null) {
+      taskIndex = allTasks.findIndex((e) => e.id === task.id);
+    }
+    if (taskIndex === -1) {
+      // Fallback: match by trimmed question text
+      const normalise = (s) => (s || "").trim().toLowerCase();
+      taskIndex = allTasks.findIndex(
+        (e) => normalise(e.question) === normalise(task.question)
+      );
+    }
+
+    if (taskIndex === -1) {
+      return NextResponse.json(
+        { error: "Task not found. Please refresh the page and try again." },
+        { status: 404 }
+      );
+    }
+
+    // Idempotent: already answered — return success so client can continue
     if (allTasks[taskIndex].isAnswered) {
-      return NextResponse.json({ message: "Task is already answered" });
+      return NextResponse.json({
+        message: "Task already answered",
+        courseCompleted: false,
+        courseId: roadmap,
+      });
     }
 
     allTasks[taskIndex] = {
       ...task,
       isAnswered: true,
-      isCorrect: isCorrect,
+      isCorrect,
       userAnswer,
     };
 
@@ -144,17 +184,23 @@ export async function POST(req) {
     if (isCorrect) {
       let points = 2;
       if (task.type === "match-the-following") {
-        points = isCorrect.filter((e) => e).length * 2;
+        points = Array.isArray(isCorrect)
+          ? isCorrect.filter((e) => e).length * 2
+          : 2;
       }
 
-      // Update legacy user XP
-      await adminDb
-        .collection("users")
-        .doc(session.user.email)
-        .update({
-          xp: FieldValue.increment(points),
-          [`xptrack.${month}`]: FieldValue.increment(points),
-        });
+      // Update legacy user XP — don't throw if this fails
+      try {
+        await adminDb
+          .collection("users")
+          .doc(session.user.email)
+          .update({
+            xp: FieldValue.increment(points),
+            [`xptrack.${month}`]: FieldValue.increment(points),
+          });
+      } catch (xpUpdateError) {
+        console.error("Failed to update legacy user XP:", xpUpdateError);
+      }
 
       // Award XP in gamification stats
       try {
@@ -165,14 +211,14 @@ export async function POST(req) {
           let stats = statsDoc.exists
             ? statsDoc.data()
             : {
-              xp: 0,
-              level: 1,
-              streak: 1,
-              badges: [],
-              rank: 0,
-              achievements: [],
-              lastActive: new Date().toISOString(),
-            };
+                xp: 0,
+                level: 1,
+                streak: 1,
+                badges: [],
+                rank: 0,
+                achievements: [],
+                lastActive: new Date().toISOString(),
+              };
 
           const newXP = (stats.xp || 0) + xpGained;
           const newLevel = Math.floor(newXP / 500) + 1;
@@ -215,26 +261,33 @@ export async function POST(req) {
         });
       } catch (xpError) {
         console.error("Failed to award task XP:", xpError);
+        // Non-fatal: task submission itself should still succeed
       }
     }
 
-    // Save updated tasks first
+    // Save updated tasks
     await taskRef.set({ ...allTasks });
 
-    // Check if all tasks in this chapter are now answered → mark chapter complete
+    // Check if all tasks answered → mark chapter complete
     const completedTasks = allTasks.filter((t) => t.isAnswered);
     let courseCompleted = false;
     if (completedTasks.length === allTasks.length) {
-      courseCompleted = await completeChapter(chapter, roadmap, session.user);
+      courseCompleted = await completeChapter(chapterStr, roadmap, session.user);
     }
 
-    return NextResponse.json({
-      message: "Task updated successfully",
-      courseCompleted,
-      courseId: roadmap,
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        message: "Task updated successfully",
+        courseCompleted,
+        courseId: roadmap,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Tasks API error:", error);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error. Please try again." },
+      { status: 500 }
+    );
   }
 }
